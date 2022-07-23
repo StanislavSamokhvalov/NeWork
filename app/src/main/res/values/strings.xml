@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">NeWork</string>
+    <string name="description_post_menu">Menu button</string>
+    <string name="description_photo">Photo</string>
+    <string name="description_post_like">Like Button</string>
+    <string name="description_post_share">Share Button</string>
+    <string name="description_post_author_avatar">Author avatar</string>
+    <string name="button_sign_in">Log In</string>
+    <string name="password_sign_in">Password</string>
+    <string name="login_sign_in">Login</string>
+    <string name="registration">Registration</string>
+    <string name="name">Name</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="chooser_share_post">Share post</string>
+    <string name="error_auth">Invalid login or password</string>
+    <string name="page_users">Users</string>
+    <string name="page_profile">Profile</string>
+    <string name="page_posts">Posts</string>
+    <string name="page_events">Events</string>
+</resources>
