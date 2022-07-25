@@ -35,7 +35,7 @@
                 android:id="@+id/login"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginTop="75dp"
+                android:layout_marginTop="50dp"
                 android:ems="10"
                 android:gravity="start|top"
                 android:importantForAutofill="no"
@@ -93,7 +93,32 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password"
-                app:layout_constraintVertical_bias="0.20" />
+                app:layout_constraintVertical_bias="0.10" />
+
+            <TextView
+                android:id="@+id/registrationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/registration_text"
+                app:layout_constraintBottom_toTopOf="@+id/registrationButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/registrationButton"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/colorButton"
+                android:text="@string/registration_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.2"
+                app:layout_constraintTop_toBottomOf="@+id/signInButton" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,6 @@
     <string name="button_sign_in">Log In</string>
     <string name="password_sign_in">Password</string>
     <string name="login_sign_in">Login</string>
-    <string name="registration">Registration</string>
     <string name="name">Name</string>
     <string name="repeat_password">Repeat password</string>
     <string name="chooser_share_post">Share post</string>
@@ -17,4 +16,9 @@
     <string name="page_profile">Profile</string>
     <string name="page_posts">Posts</string>
     <string name="page_events">Events</string>
+    <string name="registration_button">Registration</string>
+    <string name="registration_text">Don\'t have an account?</string>
+    <string name="error_loading">Something went wrong. Try again later</string>
+    <string name="retry_loading">Retry</string>
+    <string name="error_password">Password mismatch</string>
 </resources>

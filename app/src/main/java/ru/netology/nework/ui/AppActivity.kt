@@ -5,12 +5,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.ActivityAppBinding
 import ru.netology.nework.viewmodel.AuthViewModel
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity() {
     @Inject

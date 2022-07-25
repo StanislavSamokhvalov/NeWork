@@ -12,4 +12,5 @@ data class ModelState(
     val loading: Boolean = false,
     val refreshing: Boolean = false,
     val errorLogin: Boolean = false,
+    val errorRegistration: Boolean = false
 )

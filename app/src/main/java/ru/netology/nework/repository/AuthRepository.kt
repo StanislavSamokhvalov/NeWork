@@ -1,6 +1,5 @@
 package ru.netology.nework.repository
 
-import android.net.Uri
 import ru.netology.nework.dto.Token
 
 interface AuthRepository {

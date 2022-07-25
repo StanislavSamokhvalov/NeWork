@@ -50,6 +50,10 @@ class SignInFragment : Fragment() {
                     password.text.toString()
                 )
             }
+
+            registrationButton.setOnClickListener {
+                findNavController().navigate(R.id.action_signInFragment_to_singUpFragment)
+            }
         }
         return binding.root
     }

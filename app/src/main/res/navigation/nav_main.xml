@@ -2,14 +2,17 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
     app:startDestination="@id/feedFragment">
 
     <fragment
         android:id="@+id/signInFragment"
         android:name="ru.netology.nework.ui.SignInFragment"
-        android:label="SignInFragment" />
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_singUpFragment"
+            app:destination="@id/singUpFragment" />
+    </fragment>
     <fragment
         android:id="@+id/feedFragment"
         android:name="ru.netology.nework.ui.FeedFragment"
@@ -17,5 +20,13 @@
         <action
             android:id="@+id/action_feedFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/singUpFragment"
+        android:name="ru.netology.nework.ui.SingUpFragment"
+        android:label="SingUpFragment" >
+        <action
+            android:id="@+id/action_singUpFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
     </fragment>
 </navigation>
