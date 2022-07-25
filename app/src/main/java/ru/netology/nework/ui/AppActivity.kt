@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.nework.R
@@ -28,7 +32,22 @@ class AppActivity : AppCompatActivity() {
         binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (!viewModelAuth.authenticated){
+        val navView: BottomNavigationView = binding.mainNavView
+        val navController = findNavController(R.id.nav_host_fragment)
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_posts,
+                R.id.navigation_events,
+                R.id.navigation_users,
+                R.id.navigation_profile
+            )
+        )
+        setupActionBarWithNavController (navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+
+
+        if (!viewModelAuth.authenticated) {
             findNavController(R.id.nav_host_fragment).navigate(R.id.signInFragment)
         }
     }

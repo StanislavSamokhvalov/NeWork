@@ -3,20 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_main"
-    app:startDestination="@id/feedFragment">
+    app:startDestination="@id/navigation_posts">
 
     <fragment
         android:id="@+id/signInFragment"
         android:name="ru.netology.nework.ui.SignInFragment"
-        android:label="SignInFragment" >
+        android:label="SignIn" >
         <action
             android:id="@+id/action_signInFragment_to_singUpFragment"
             app:destination="@id/singUpFragment" />
     </fragment>
     <fragment
-        android:id="@+id/feedFragment"
+        android:id="@+id/navigation_posts"
         android:name="ru.netology.nework.ui.FeedFragment"
-        android:label="FeedFragment" >
+        android:label="Posts" >
         <action
             android:id="@+id/action_feedFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
@@ -24,9 +24,26 @@
     <fragment
         android:id="@+id/singUpFragment"
         android:name="ru.netology.nework.ui.SingUpFragment"
-        android:label="SingUpFragment" >
+        android:label="SingUp" >
         <action
             android:id="@+id/action_singUpFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
+            app:destination="@id/navigation_posts" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_users"
+        android:name="ru.netology.nework.ui.UsersFragment"
+        android:label="Users"
+        />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="ru.netology.nework.ui.ProfileFragment"
+        android:label="Profile" />
+    <fragment
+        android:id="@+id/navigation_events"
+        android:name="ru.netology.nework.ui.EventsFragment"
+        android:label="Events" />
+    <activity
+        android:id="@+id/appActivity"
+        android:name="ru.netology.nework.ui.AppActivity"
+        android:label="AppActivity" />
 </navigation>

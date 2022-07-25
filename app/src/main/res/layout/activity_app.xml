@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/main_nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/nav_host_fragment"
@@ -19,10 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_main"
         tools:context=".ui.AppActivity"
-        tools:layout="@layout/fragment_feed"
-        tools:layout_editor_absoluteX="-38dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout="@layout/fragment_feed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
