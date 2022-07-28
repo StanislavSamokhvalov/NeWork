@@ -21,4 +21,11 @@
     <string name="error_loading">Something went wrong. Try again later</string>
     <string name="retry_loading">Retry</string>
     <string name="error_password">Password mismatch</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_remove">Remove</string>
+    <string name="add_post">Create post</string>
+    <string name="description_select_photo">Select photo</string>
+    <string name="description_take_photo">Take photo</string>
+    <string name="menu_save">Save</string>
+    <string name="error_empty_content">Content can\'t be empty!</string>
 </resources>

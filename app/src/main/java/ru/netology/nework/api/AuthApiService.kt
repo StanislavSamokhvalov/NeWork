@@ -7,10 +7,7 @@ import ru.netology.nework.dto.PushToken
 import ru.netology.nework.dto.Token
 import ru.netology.nework.dto.User
 
-interface ApiService {
-    @GET("posts")
-    suspend fun getAll(): Response<List<Post>>
-
+interface AuthApiService {
     @FormUrlEncoded
     @POST("users/authentication")
     suspend fun authenticationRequest(

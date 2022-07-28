@@ -8,11 +8,22 @@ data class Post(
     val content: String,
     val published: String,
 //    val coords: Coordinates? = null,
-    val link: String?,
+    val link: String? = null,
 //    val likeOwnerIds: List<Int>,
 //    val mentionIds: List<Int>,
-    val mentionedMe: Boolean,
-    val likedByMe: Boolean,
-    val ownedByMe: Boolean = false,
-    val attachment: Attachment?
-)
+    val mentionedMe: Boolean = false,
+    val likedByMe: Boolean = false,
+    val ownedByMe: Boolean = true,
+    val attachment: Attachment? = null
+) {
+    companion object {
+        val empty = Post(
+            id = 0,
+            authorId = 0,
+            author = "",
+            authorAvatar = "",
+            content = "",
+            published = "2022-07-28"
+        )
+    }
+}

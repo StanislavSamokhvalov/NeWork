@@ -34,12 +34,15 @@ class FeedFragment : Fragment() {
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+                val bundle = Bundle().apply {
+                    putString("content", post.content)}
+                findNavController().navigate(R.id.newPostFragment, bundle)
             }
 
             override fun onLike(post: Post) {
-//                if (viewModelAuth.authenticated) {
-//                    if (!post.likedByMe) viewModel.likeById(post.id) else viewModel.unlikeById(post.id)
-//                } else findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
+                if (viewModelAuth.authenticated) {
+                    if (!post.likedByMe) viewModel.likeById(post.id) else viewModel.unlikeById(post.id)
+                } else findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
             }
 
             override fun onRemove(post: Post) {
@@ -60,6 +63,10 @@ class FeedFragment : Fragment() {
         })
 
         binding.list.adapter = adapter
+
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_posts_to_newPostFragment)
+        }
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.posts)

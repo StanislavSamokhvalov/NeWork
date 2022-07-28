@@ -2,6 +2,7 @@ package ru.netology.nework.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -46,6 +47,16 @@ class AppActivity : AppCompatActivity() {
         setupActionBarWithNavController (navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_posts, R.id.navigation_events, R.id.navigation_users, R.id.navigation_profile -> {
+                    navView.visibility = View.VISIBLE
+                }
+                else -> {
+                    navView.visibility = View.GONE
+                }
+            }
+        }
 
         if (!viewModelAuth.authenticated) {
             findNavController(R.id.nav_host_fragment).navigate(R.id.signInFragment)

@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import ru.netology.nework.api.ApiService
+import ru.netology.nework.api.AuthApiService
 import ru.netology.nework.dto.PushToken
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AppAuth @Inject constructor(
-    private val api: ApiService,
+    private val api: AuthApiService,
     private val authPrefs: SharedPreferences
 ) {
     companion object {

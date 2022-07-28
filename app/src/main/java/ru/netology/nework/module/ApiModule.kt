@@ -11,7 +11,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import ru.netology.nework.BuildConfig
-import ru.netology.nework.api.ApiService
+import ru.netology.nework.api.AuthApiService
+import ru.netology.nework.api.PostApiService
 import ru.netology.nework.auth.AppAuth
 import javax.inject.Singleton
 
@@ -61,6 +62,10 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create()
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService = retrofit.create()
+
+    @Singleton
+    @Provides
+    fun providePostApiService(retrofit: Retrofit): PostApiService = retrofit.create()
 
 }
