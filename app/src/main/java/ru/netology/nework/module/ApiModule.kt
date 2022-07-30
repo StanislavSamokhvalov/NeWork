@@ -13,6 +13,7 @@ import retrofit2.create
 import ru.netology.nework.BuildConfig
 import ru.netology.nework.api.AuthApiService
 import ru.netology.nework.api.PostApiService
+import ru.netology.nework.api.UserApiService
 import ru.netology.nework.auth.AppAuth
 import javax.inject.Singleton
 
@@ -68,4 +69,7 @@ class ApiModule {
     @Provides
     fun providePostApiService(retrofit: Retrofit): PostApiService = retrofit.create()
 
+    @Singleton
+    @Provides
+    fun provideUserApiService(retrofit: Retrofit): UserApiService = retrofit.create()
 }

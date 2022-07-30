@@ -2,7 +2,7 @@ package ru.netology.nework.model
 
 import ru.netology.nework.dto.Post
 
-data class FeedModel(
+data class PostModel(
     val posts: List<Post> = emptyList(),
     val empty: Boolean = false
 )

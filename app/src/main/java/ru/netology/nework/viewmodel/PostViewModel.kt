@@ -9,15 +9,13 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nework.auth.AppAuth
-import ru.netology.nework.dto.MediaUpload
 import ru.netology.nework.dto.Post
 import ru.netology.nework.enumeration.AttachmentType
-import ru.netology.nework.model.FeedModel
+import ru.netology.nework.model.PostModel
 import ru.netology.nework.model.MediaModel
 import ru.netology.nework.model.ModelState
 import ru.netology.nework.repository.PostRepository
 import ru.netology.nework.util.SingleLiveEvent
-import java.io.File
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -42,12 +40,12 @@ class PostViewModel @Inject constructor(
     appAuth: AppAuth
 ) : ViewModel() {
 
-    val data: LiveData<FeedModel> = appAuth
+    val data: LiveData<PostModel> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
             repository.data
                 .map { posts ->
-                    FeedModel(
+                    PostModel(
                         posts.map { it.copy(ownedByMe = it.authorId == myId) },
                         posts.isEmpty()
                     )
