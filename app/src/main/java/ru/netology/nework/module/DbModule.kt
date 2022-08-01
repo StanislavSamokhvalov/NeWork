@@ -7,10 +7,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.netology.nework.dao.EventDao
 import ru.netology.nework.dao.PostDao
 import ru.netology.nework.dao.UserDao
 import ru.netology.nework.db.AppDb
-import ru.netology.nework.dto.User
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -29,4 +29,7 @@ object DbModule {
 
     @Provides
     fun provideUserDao(appDb: AppDb): UserDao = appDb.userDao()
+
+    @Provides
+    fun provideEventDao(appDb: AppDb): EventDao = appDb.eventDao()
 }

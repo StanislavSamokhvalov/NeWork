@@ -36,6 +36,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewUser"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/materialDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_user"
         android:layout_width="wrap_content"

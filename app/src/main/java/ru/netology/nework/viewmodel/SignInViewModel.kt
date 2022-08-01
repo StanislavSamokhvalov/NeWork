@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.netology.nework.dto.Token
-import ru.netology.nework.model.ModelState
+import ru.netology.nework.model.PostModelState
 import ru.netology.nework.repository.AuthRepositoryImpl
 import java.io.IOException
 import javax.inject.Inject
@@ -21,20 +21,20 @@ class SignInViewModel @Inject constructor(
     val data: LiveData<Token>
         get() = _data
 
-    private val _dataState = MutableLiveData<ModelState>() // в ошибку
-    val dataState: LiveData<ModelState>
+    private val _dataState = MutableLiveData<PostModelState>() // в ошибку
+    val dataState: LiveData<PostModelState>
         get() = _dataState
 
     fun attemptLogin(login: String, password: String) {
         viewModelScope.launch {
-            _dataState.postValue(ModelState(loading = true))
+            _dataState.postValue(PostModelState(loading = true))
             try {
                 _data.value = authRepository.authUser(login, password)
-                _dataState.postValue(ModelState())
+                _dataState.postValue(PostModelState())
             } catch (e: IOException) {
-                _dataState.postValue(ModelState(error = true))
+                _dataState.postValue(PostModelState(error = true))
             } catch (e: Exception) {
-                _dataState.postValue(ModelState(errorLogin = true))
+                _dataState.postValue(PostModelState(errorLogin = true))
             }
         }
     }

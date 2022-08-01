@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import ru.netology.nework.model.ModelState
+import ru.netology.nework.dto.User
 import ru.netology.nework.model.UserModel
 import ru.netology.nework.model.UserModelState
 import ru.netology.nework.repository.UserRepository
@@ -14,6 +14,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
+
 
     val data: LiveData<UserModel> = repository.data
         .map { user ->
@@ -27,6 +28,10 @@ class UserViewModel @Inject constructor(
     val dataState: LiveData<UserModelState>
         get() = _dataState
 
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User>
+        get() = _user
+
     init {
         loadUsers()
     }
@@ -35,6 +40,16 @@ class UserViewModel @Inject constructor(
         try {
             _dataState.postValue(UserModelState(loading = true))
             repository.getAll()
+            _dataState.postValue(UserModelState())
+        } catch (e: Exception) {
+            _dataState.postValue(UserModelState(error = true))
+        }
+    }
+
+    fun openUser(id: Int) = viewModelScope.launch {
+        try {
+            _dataState.postValue(UserModelState(loading = true))
+            _user.value = repository.getUserById(id)
             _dataState.postValue(UserModelState())
         } catch (e: Exception) {
             _dataState.postValue(UserModelState(error = true))

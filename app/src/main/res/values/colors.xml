@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorButton">#3A9BCD</color>
+    <color name="primaryColor">#c8e6c9</color>
+    <color name="primaryLightColor">#fbfffc</color>
+    <color name="primaryDarkColor">#97b498</color>
+    <color name="primaryTextColor">#000000</color>
 </resources>

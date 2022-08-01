@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import ru.netology.nework.api.UserApiService
 import ru.netology.nework.dao.UserDao
+import ru.netology.nework.dto.User
 import ru.netology.nework.entity.UserEntity
 import ru.netology.nework.entity.toDto
 import ru.netology.nework.entity.toUserEntity
@@ -32,6 +33,20 @@ class UserRepositoryImpl @Inject constructor(
             }
             val data = response.body() ?: throw ApiError(response.code(), response.message())
             userDao.insert(data.toUserEntity())
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun getUserById(id: Int): User {
+        try {
+            val response = apiUser.getUserById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {

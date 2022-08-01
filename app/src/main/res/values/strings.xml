@@ -28,4 +28,7 @@
     <string name="description_take_photo">Take photo</string>
     <string name="menu_save">Save</string>
     <string name="error_empty_content">Content can\'t be empty!</string>
+    <string name="speakers_button">Speakers</string>
+    <string name="join_button">Join</string>
+    <string name="participants_button">Party</string>
 </resources>

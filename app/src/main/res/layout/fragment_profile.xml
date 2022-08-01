@@ -5,11 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="my profile"
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/common_spacing"
+        android:contentDescription="@string/description_post_author_avatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/authorName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_spacing"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Name Author" />
 </androidx.constraintlayout.widget.ConstraintLayout>

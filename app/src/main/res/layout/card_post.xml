@@ -31,12 +31,13 @@
             android:layout_marginEnd="@dimen/common_spacing"
             android:ellipsize="end"
             android:singleLine="true"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/published"
             app:layout_constraintEnd_toStartOf="@id/menu"
             app:layout_constraintStart_toEndOf="@id/avatar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Name Author"/>
+            tools:text="Name Author" />
 
         <TextView
             android:id="@+id/published"
@@ -45,11 +46,12 @@
             android:layout_marginStart="@dimen/common_spacing"
             android:layout_marginEnd="@dimen/common_spacing"
             android:layout_marginBottom="@dimen/common_spacing"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/header"
             app:layout_constraintEnd_toStartOf="@id/menu"
             app:layout_constraintStart_toEndOf="@id/avatar"
             app:layout_constraintTop_toBottomOf="@id/author"
-            tools:text="Published"/>
+            tools:text="Published" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/menu"
@@ -79,10 +81,11 @@
             android:lineSpacingMultiplier="1.5"
             android:paddingTop="@dimen/common_spacing"
             android:paddingBottom="@dimen/common_spacing"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header"
-            tools:text="Content"/>
+            tools:text="Content" />
 
 
         <androidx.constraintlayout.widget.Barrier

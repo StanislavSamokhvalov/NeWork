@@ -13,7 +13,7 @@ import ru.netology.nework.dto.Post
 import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.model.PostModel
 import ru.netology.nework.model.MediaModel
-import ru.netology.nework.model.ModelState
+import ru.netology.nework.model.PostModelState
 import ru.netology.nework.repository.PostRepository
 import ru.netology.nework.util.SingleLiveEvent
 import java.io.InputStream
@@ -52,8 +52,8 @@ class PostViewModel @Inject constructor(
                 }
         }.asLiveData(Dispatchers.Default)
 
-    private val _dataState = MutableLiveData<ModelState>()
-    val dataState: LiveData<ModelState>
+    private val _dataState = MutableLiveData<PostModelState>()
+    val dataState: LiveData<PostModelState>
         get() = _dataState
 
     private val _postCreated = SingleLiveEvent<Unit>()
@@ -73,18 +73,18 @@ class PostViewModel @Inject constructor(
 
     fun loadPosts() = viewModelScope.launch {
         try {
-            _dataState.postValue(ModelState(loading = true))
+            _dataState.postValue(PostModelState(loading = true))
             repository.getAll()
-            _dataState.postValue(ModelState())
+            _dataState.postValue(PostModelState())
         } catch (e: Exception) {
-            _dataState.postValue(ModelState(error = true))
+            _dataState.postValue(PostModelState(error = true))
         }
     }
 
     fun save() {
         edited.value?.let { post ->
             viewModelScope.launch {
-                _dataState.postValue(ModelState(loading = true))
+                _dataState.postValue(PostModelState(loading = true))
                 try {
                     when (_media.value) {
                         noMedia -> repository.save(post)
@@ -94,10 +94,10 @@ class PostViewModel @Inject constructor(
 //                            repository.saveWithAttachment(post, it, _media.value?.type!!)
 //                        }
                     }
-                    _dataState.value = ModelState()
+                    _dataState.value = PostModelState()
                     _postCreated.value = Unit
                 } catch (e: Exception) {
-                    _dataState.value = ModelState(error = true)
+                    _dataState.value = PostModelState(error = true)
                 }
             }
             edited.value = empty
@@ -121,7 +121,7 @@ class PostViewModel @Inject constructor(
         try {
             repository.likeById(id)
         } catch (e: Exception) {
-            _dataState.postValue(ModelState(error = true))
+            _dataState.postValue(PostModelState(error = true))
         }
     }
 
@@ -129,7 +129,7 @@ class PostViewModel @Inject constructor(
         try {
             repository.unlikeById(id)
         } catch (e: Exception) {
-            _dataState.postValue(ModelState(error = true))
+            _dataState.postValue(PostModelState(error = true))
         }
     }
 
@@ -137,7 +137,7 @@ class PostViewModel @Inject constructor(
         try {
             repository.removeById(id)
         } catch (e: Exception) {
-            _dataState.postValue(ModelState(error = true))
+            _dataState.postValue(PostModelState(error = true))
         }
     }
 

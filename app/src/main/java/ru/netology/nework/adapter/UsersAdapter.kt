@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.nework.util.uploadingAvatar
 
 
 interface UserCallback {
-    fun onUser(){}
+    fun onUser(user: User){}
 }
 
 class UsersAdapter(
@@ -33,7 +34,14 @@ class UserViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: User) {
-        binding.userName.text = user.name
+        with(binding){
+            userName.text = user.name
+            uploadingAvatar(userAvatar, user.avatar)
+            viewUser.setOnClickListener {
+                userCallback.onUser(user)
+            }
+        }
+
     }
 }
 

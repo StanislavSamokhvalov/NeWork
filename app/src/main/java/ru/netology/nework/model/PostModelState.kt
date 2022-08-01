@@ -7,7 +7,7 @@ data class PostModel(
     val empty: Boolean = false
 )
 
-data class ModelState(
+data class PostModelState(
     val error: Boolean = false,
     val loading: Boolean = false,
     val refreshing: Boolean = false,
