@@ -2,9 +2,9 @@ package ru.netology.nework.dto
 
 import ru.netology.nework.enumeration.EventType
 
-class Event(
-    val id: Long,
-    val authorId: Long,
+data class Event(
+    val id: Int,
+    val authorId: Int,
     val author: String,
     val authorAvatar: String?,
     val content: String,
@@ -12,10 +12,10 @@ class Event(
     val published: String,
     val coords: Coordinates? = null,
     val type: EventType,
-    val likeOwnerIds: Set<Long> = emptySet(),
+    val likeOwnerIds: Set<Int> = emptySet(),
     val likedByMe: Boolean = false,
-    val speakerIds: Set<Long> = emptySet(),
-    val participantsIds: Set<Long> = emptySet(),
+    val speakerIds: Set<Int> = emptySet(),
+    val participantsIds: Set<Int> = emptySet(),
     val participatedByMe: Boolean = false,
     val attachment: Attachment? = null,
     val link: String? = null,
@@ -34,4 +34,15 @@ class Event(
             speakerIds = emptySet()
         )
     }
+}
+
+data class EventTypeEmbeddable(
+    val eventType: String
+) {
+    fun toDto() = EventType.valueOf(eventType)
+
+    companion object {
+        fun fromDto(dto: EventType) = EventTypeEmbeddable(dto.name)
+    }
+
 }

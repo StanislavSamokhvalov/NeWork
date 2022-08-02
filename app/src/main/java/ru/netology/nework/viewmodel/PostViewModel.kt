@@ -36,14 +36,14 @@ private val empty = Post(
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
 class PostViewModel @Inject constructor(
-    private val repository: PostRepository,
+    private val postRepository: PostRepository,
     appAuth: AppAuth
 ) : ViewModel() {
 
     val data: LiveData<PostModel> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
-            repository.data
+            postRepository.data
                 .map { posts ->
                     PostModel(
                         posts.map { it.copy(ownedByMe = it.authorId == myId) },
@@ -74,7 +74,7 @@ class PostViewModel @Inject constructor(
     fun loadPosts() = viewModelScope.launch {
         try {
             _dataState.postValue(PostModelState(loading = true))
-            repository.getAll()
+            postRepository.getAll()
             _dataState.postValue(PostModelState())
         } catch (e: Exception) {
             _dataState.postValue(PostModelState(error = true))
@@ -87,7 +87,7 @@ class PostViewModel @Inject constructor(
                 _dataState.postValue(PostModelState(loading = true))
                 try {
                     when (_media.value) {
-                        noMedia -> repository.save(post)
+                        noMedia -> postRepository.save(post)
 //                        else -> _media.value?.inputStream?.let {
 //                            MediaUpload(it)
 //                        }?.let {
@@ -119,7 +119,7 @@ class PostViewModel @Inject constructor(
 
     fun likeById(id: Int) = viewModelScope.launch {
         try {
-            repository.likeById(id)
+            postRepository.likeById(id)
         } catch (e: Exception) {
             _dataState.postValue(PostModelState(error = true))
         }
@@ -127,7 +127,7 @@ class PostViewModel @Inject constructor(
 
     fun unlikeById(id: Int) = viewModelScope.launch {
         try {
-            repository.unlikeById(id)
+            postRepository.unlikeById(id)
         } catch (e: Exception) {
             _dataState.postValue(PostModelState(error = true))
         }
@@ -135,7 +135,7 @@ class PostViewModel @Inject constructor(
 
     fun removeById(id: Int) = viewModelScope.launch {
         try {
-            repository.removeById(id)
+            postRepository.removeById(id)
         } catch (e: Exception) {
             _dataState.postValue(PostModelState(error = true))
         }

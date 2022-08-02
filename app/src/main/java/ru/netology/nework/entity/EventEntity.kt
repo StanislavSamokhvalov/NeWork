@@ -3,32 +3,31 @@ package ru.netology.nework.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.netology.nework.dto.Attachment
-import ru.netology.nework.dto.Coordinates
-import ru.netology.nework.dto.Event
+import ru.netology.nework.dto.*
+import ru.netology.nework.dto.AttachmentEmbeddable
 import ru.netology.nework.enumeration.EventType
 
 @Entity
 data class EventEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
-    val authorId: Long,
+    val id: Int,
+    val authorId: Int,
     val author: String,
     val authorAvatar: String?,
     val content: String,
     val datetime: String,
     val published: String,
     @Embedded
-    val coords: Coordinates? = null,
+    val coords: CoordinatesEmbeddable?,
     @Embedded
-    val type: EventType,
-    val likeOwnerIds: Set<Long> = emptySet(),
+    val type: EventTypeEmbeddable,
+    val likeOwnerIds: Set<Int> = emptySet(),
     val likedByMe: Boolean = false,
-    val speakerIds: Set<Long> = emptySet(),
-    val participantsIds: Set<Long> = emptySet(),
+    val speakerIds: Set<Int> = emptySet(),
+    val participantsIds: Set<Int> = emptySet(),
     val participatedByMe: Boolean = false,
     @Embedded
-    val attachment: Attachment? = null,
+    val attachment: AttachmentEmbeddable? = null,
     val link: String? = null,
     val ownedByMe: Boolean = false
 ) {
@@ -41,11 +40,16 @@ data class EventEntity(
             content,
             datetime,
             published,
-            coords,
-            type,
+            coords?.toDto(),
+            type.toDto(),
             likeOwnerIds,
             likedByMe,
-            speakerIds
+            speakerIds,
+            participantsIds,
+            participatedByMe,
+            attachment?.toDto(),
+            link,
+            ownedByMe
         )
 
     companion object {
@@ -58,11 +62,16 @@ data class EventEntity(
                 dto.content,
                 dto.datetime,
                 dto.published,
-                dto.coords,
-                dto.type,
+                CoordinatesEmbeddable.fromDto(dto.coords),
+                EventTypeEmbeddable.fromDto(dto.type),
                 dto.likeOwnerIds,
                 dto.likedByMe,
-                dto.speakerIds
+                dto.speakerIds,
+                dto.participantsIds,
+                dto.participatedByMe,
+                AttachmentEmbeddable.fromDto(dto.attachment),
+                dto.link,
+                dto.ownedByMe
             )
     }
 }

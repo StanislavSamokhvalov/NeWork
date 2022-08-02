@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
-    private val apiUser: UserApiService
+    private val userApiService: UserApiService
 ) : UserRepository {
 
     override val data = userDao.getAll()
@@ -27,7 +27,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getAll() {
         try {
             userDao.getAll()
-            val response = apiUser.getAll()
+            val response = userApiService.getAll()
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -42,7 +42,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserById(id: Int): User {
         try {
-            val response = apiUser.getUserById(id)
+            val response = userApiService.getUserById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

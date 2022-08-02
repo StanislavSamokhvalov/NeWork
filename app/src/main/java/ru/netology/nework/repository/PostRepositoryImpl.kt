@@ -2,16 +2,12 @@ package ru.netology.nework.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import ru.netology.nework.api.AuthApiService
 import ru.netology.nework.api.PostApiService
 import ru.netology.nework.dao.PostDao
-import ru.netology.nework.dto.Attachment
-import ru.netology.nework.dto.MediaUpload
 import ru.netology.nework.dto.Post
 import ru.netology.nework.entity.PostEntity
 import ru.netology.nework.entity.toDto
 import ru.netology.nework.entity.toEntity
-import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.error.ApiError
 import ru.netology.nework.error.NetworkError
 import ru.netology.nework.error.UnknownError
@@ -20,7 +16,7 @@ import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
     private val postDao: PostDao,
-    private val apiPost: PostApiService
+    private val postApiService: PostApiService
 ) : PostRepository {
 
     override val data = postDao.getAll()
@@ -30,7 +26,7 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun getAll() {
         try {
             postDao.getAll()
-            val response = apiPost.getAll()
+            val response = postApiService.getAll()
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -45,7 +41,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun likeById(id: Int) {
         try {
-            val response = apiPost.likeById(id)
+            val response = postApiService.likeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -60,7 +56,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun unlikeById(id: Int) {
         try {
-            val response = apiPost.unlikeById(id)
+            val response = postApiService.unlikeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -110,7 +106,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun save(post: Post) {
         try {
-            val response = apiPost.save(post)
+            val response = postApiService.save(post)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -125,7 +121,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun removeById(id: Int) {
         try {
-            val response = apiPost.removeById(id)
+            val response = postApiService.removeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

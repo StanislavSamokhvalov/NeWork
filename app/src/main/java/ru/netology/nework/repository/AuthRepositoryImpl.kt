@@ -8,10 +8,10 @@ import ru.netology.nework.error.UnknownError
 import java.io.IOException
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(private val apiAuth: AuthApiService) : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(private val authApiService: AuthApiService) : AuthRepository {
     override suspend fun authUser(login: String, password: String): Token {
         try {
-            val response = apiAuth.authenticationRequest(login, password)
+            val response = authApiService.authenticationRequest(login, password)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -25,7 +25,7 @@ class AuthRepositoryImpl @Inject constructor(private val apiAuth: AuthApiService
 
     override suspend fun registerUser(login: String, password: String, name: String): Token {
         try {
-            val response = apiAuth.registerUser(login, password, name)
+            val response = authApiService.registerUser(login, password, name)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

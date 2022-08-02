@@ -12,11 +12,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val repository: UserRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
 
-    val data: LiveData<UserModel> = repository.data
+    val data: LiveData<UserModel> = userRepository.data
         .map { user ->
             UserModel(
                 user,
@@ -39,7 +39,7 @@ class UserViewModel @Inject constructor(
     fun loadUsers() = viewModelScope.launch {
         try {
             _dataState.postValue(UserModelState(loading = true))
-            repository.getAll()
+            userRepository.getAll()
             _dataState.postValue(UserModelState())
         } catch (e: Exception) {
             _dataState.postValue(UserModelState(error = true))
@@ -49,7 +49,7 @@ class UserViewModel @Inject constructor(
     fun openUser(id: Int) = viewModelScope.launch {
         try {
             _dataState.postValue(UserModelState(loading = true))
-            _user.value = repository.getUserById(id)
+            _user.value = userRepository.getUserById(id)
             _dataState.postValue(UserModelState())
         } catch (e: Exception) {
             _dataState.postValue(UserModelState(error = true))
