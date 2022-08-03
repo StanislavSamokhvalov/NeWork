@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
-    app:cardCornerRadius="12dp"
+    android:id="@+id/card_view_post"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,7 +18,7 @@
             android:layout_height="48dp"
             android:layout_marginBottom="@dimen/common_spacing"
             android:contentDescription="@string/description_post_author_avatar"
-            app:layout_constraintBottom_toBottomOf="@id/header"
+            app:layout_constraintBottom_toBottomOf="@id/barrier_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +46,7 @@
             android:layout_marginEnd="@dimen/common_spacing"
             android:layout_marginBottom="@dimen/common_spacing"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/header"
+            app:layout_constraintBottom_toBottomOf="@id/barrier_top"
             app:layout_constraintEnd_toStartOf="@id/menu"
             app:layout_constraintStart_toEndOf="@id/avatar"
             app:layout_constraintTop_toBottomOf="@id/author"
@@ -55,17 +54,16 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/menu"
+            style="@style/Widget.AppTheme.LikeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/common_spacing"
             android:contentDescription="@string/description_post_menu"
             app:icon="@drawable/ic_menu_24dp"
-            style="@style/Widget.AppTheme.LikeCheckBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/header"
+            android:id="@+id/barrier_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
@@ -84,41 +82,110 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintTop_toBottomOf="@id/barrier_top"
             tools:text="Content" />
 
+        <ImageView
+            android:id="@+id/videoView"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content"
+            tools:ignore="ContentDescription" />
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="372dp"
+            android:layout_height="270dp"
+            android:layout_marginTop="4dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/play_audio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videoView"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/play_audio"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_spacing"
+            android:layout_marginBottom="@dimen/common_spacing"
+            android:checkable="true"
+            app:icon="@drawable/ic_play_pause"
+            app:layout_constraintBottom_toTopOf="@id/barrier_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/play_audio"
+            app:layout_constraintStart_toEndOf="@+id/play_audio"
+            app:layout_constraintTop_toTopOf="@+id/play_audio" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="play_audio,
+        seekBar" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_media"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="videoView, play_video" />
 
         <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/footer"
+            android:id="@+id/barrier_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="content"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="131dp" />
+            app:constraint_referenced_ids="play_audio" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
+            style="@style/Widget.AppTheme.LikeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:contentDescription="@string/description_post_like"
+            android:textColor="@color/primaryTextColor"
             app:icon="@drawable/ic_like_24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/footer"
-            style="@style/Widget.AppTheme.LikeCheckBox"
+            app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
             tools:text="100" />
+
+        <ImageButton
+            android:id="@+id/play_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/videoView"
+            app:layout_constraintEnd_toEndOf="@+id/videoView"
+            app:layout_constraintStart_toStartOf="@+id/videoView"
+            app:layout_constraintTop_toTopOf="@+id/videoView"
+            app:srcCompat="@android:drawable/ic_media_play"
+            android:contentDescription="@string/play_video" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/share"
+            style="@style/Widget.AppTheme.LikeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:contentDescription="@string/description_post_share"
+            android:textColor="@color/primaryTextColor"
             app:icon="@drawable/ic_share_24dp"
             app:layout_constraintStart_toEndOf="@+id/like"
-            app:layout_constraintTop_toBottomOf="@id/footer"
-            style="@style/Widget.AppTheme.LikeCheckBox"
+            app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
             tools:text="100" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

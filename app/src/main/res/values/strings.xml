@@ -31,4 +31,5 @@
     <string name="speakers_button">Speakers</string>
     <string name="join_button">Join</string>
     <string name="participants_button">Party</string>
+    <string name="play_video">Video start button</string>
 </resources>
