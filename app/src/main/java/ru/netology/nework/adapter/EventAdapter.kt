@@ -2,14 +2,14 @@ package ru.netology.nework.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nework.databinding.CardEventBinding
 import ru.netology.nework.dto.Event
 
 
-interface OnInterractionListener {
+interface EventCallback {
     fun onLike(event: Event) {}
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
@@ -17,8 +17,8 @@ interface OnInterractionListener {
 }
 
 class EventAdapter(
-    private val onInteractionListener: OnInteractionListener,
-) : ListAdapter<Event, EventViewHolder>(EventDiffCallback()) {
+    private val onInteractionListener: EventCallback,
+) : PagingDataAdapter<Event, EventViewHolder>(EventDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding = CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return EventViewHolder(binding, onInteractionListener)
@@ -26,13 +26,13 @@ class EventAdapter(
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = getItem(position)
-        holder.bind(event)
+        event?.let { holder.bind(it) }
     }
 }
 
 class EventViewHolder(
     private val binding: CardEventBinding,
-    private val onInteractionListener: OnInteractionListener,
+    private val onInteractionListener: EventCallback,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(event: Event) {

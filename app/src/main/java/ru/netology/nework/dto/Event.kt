@@ -10,7 +10,7 @@ data class Event(
     val content: String,
     val datetime: String,
     val published: String,
-    val coords: Coordinates? = null,
+    val coordinates: Coordinates? = null,
     val type: EventType,
     val likeOwnerIds: Set<Int> = emptySet(),
     val likedByMe: Boolean = false,

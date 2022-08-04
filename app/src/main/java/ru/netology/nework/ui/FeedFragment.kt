@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
-import ru.netology.nework.adapter.OnInteractionListener
+import ru.netology.nework.adapter.PostCallback
 import ru.netology.nework.adapter.PostsAdapter
 import ru.netology.nework.viewmodel.PostViewModel
 import ru.netology.nework.databinding.FragmentFeedBinding
@@ -31,7 +31,7 @@ class FeedFragment : Fragment() {
 
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
-        val adapter = PostsAdapter(object : OnInteractionListener {
+        val adapter = PostsAdapter(object : PostCallback {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
                 val bundle = Bundle().apply {

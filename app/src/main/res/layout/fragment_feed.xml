@@ -23,6 +23,7 @@
         android:layout_marginBottom="80dp"
         android:clickable="true"
         android:contentDescription="@string/add_post"
+        app:backgroundTint="@color/primaryColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add_24dp" />

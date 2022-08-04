@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.netology.nework.dto.*
 import ru.netology.nework.dto.AttachmentEmbeddable
-import ru.netology.nework.enumeration.EventType
 
 @Entity
 data class EventEntity(
@@ -18,7 +17,7 @@ data class EventEntity(
     val datetime: String,
     val published: String,
     @Embedded
-    val coords: CoordinatesEmbeddable?,
+    val coordinates: CoordinatesEmbeddable?,
     @Embedded
     val type: EventTypeEmbeddable,
     val likeOwnerIds: Set<Int> = emptySet(),
@@ -31,25 +30,26 @@ data class EventEntity(
     val link: String? = null,
     val ownedByMe: Boolean = false
 ) {
+
     fun toDto() =
         Event(
-            id,
-            authorId,
-            author,
-            authorAvatar,
-            content,
-            datetime,
-            published,
-            coords?.toDto(),
-            type.toDto(),
-            likeOwnerIds,
-            likedByMe,
-            speakerIds,
-            participantsIds,
-            participatedByMe,
-            attachment?.toDto(),
-            link,
-            ownedByMe
+            id = id,
+            authorId = authorId,
+            author = author,
+            authorAvatar = authorAvatar,
+            content = content,
+            datetime = datetime,
+            published = published,
+            coordinates = coordinates?.toDto(),
+            type = type.toDto(),
+            likeOwnerIds = likeOwnerIds,
+            likedByMe = likedByMe,
+            speakerIds = speakerIds,
+            participantsIds = participantsIds,
+            participatedByMe = participatedByMe,
+            attachment = attachment?.toDto(),
+            link = link,
+            ownedByMe = ownedByMe
         )
 
     companion object {
@@ -62,7 +62,7 @@ data class EventEntity(
                 dto.content,
                 dto.datetime,
                 dto.published,
-                CoordinatesEmbeddable.fromDto(dto.coords),
+                CoordinatesEmbeddable.fromDto(dto.coordinates),
                 EventTypeEmbeddable.fromDto(dto.type),
                 dto.likeOwnerIds,
                 dto.likedByMe,

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class EventRemoteKeyEntity(
     @PrimaryKey
     val type: KeyType,
-    val id: Long
+    val id: Int
 ) {
     enum class KeyType { AFTER, BEFORE }
 }

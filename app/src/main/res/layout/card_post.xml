@@ -45,6 +45,7 @@
             android:layout_marginStart="@dimen/common_spacing"
             android:layout_marginEnd="@dimen/common_spacing"
             android:layout_marginBottom="@dimen/common_spacing"
+            android:fontFamily="sans-serif"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/barrier_top"
             app:layout_constraintEnd_toStartOf="@id/menu"
