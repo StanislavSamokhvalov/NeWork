@@ -2,7 +2,6 @@ package ru.netology.nework.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.netology.nework.dto.Post
 import ru.netology.nework.dto.User
 
 @Entity
@@ -15,10 +14,10 @@ data class UserEntity(
 ) {
     fun toDto() =
         User(
-            id,
-            login,
-            name,
-            avatar
+            id = id,
+            login = login,
+            name = name,
+            avatar = avatar
         )
 
     companion object {

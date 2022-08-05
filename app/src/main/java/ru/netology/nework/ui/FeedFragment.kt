@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nework.R
 import ru.netology.nework.adapter.PostCallback
 import ru.netology.nework.adapter.PostsAdapter
@@ -20,8 +22,8 @@ import ru.netology.nework.viewmodel.AuthViewModel
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
 
-    private val viewModel: PostViewModel by viewModels()
-    private val viewModelAuth: AuthViewModel by viewModels()
+    private val postViewModel: PostViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,20 +35,20 @@ class FeedFragment : Fragment() {
 
         val adapter = PostsAdapter(object : PostCallback {
             override fun onEdit(post: Post) {
-                viewModel.edit(post)
+                postViewModel.edit(post)
                 val bundle = Bundle().apply {
                     putString("content", post.content)}
                 findNavController().navigate(R.id.newPostFragment, bundle)
             }
 
             override fun onLike(post: Post) {
-                if (viewModelAuth.authenticated) {
-                    if (!post.likedByMe) viewModel.likeById(post.id) else viewModel.unlikeById(post.id)
+                if (authViewModel.authenticated) {
+                    if (!post.likedByMe) postViewModel.likeById(post.id) else postViewModel.unlikeById(post.id)
                 } else findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
             }
 
             override fun onRemove(post: Post) {
-                viewModel.removeById(post.id)
+                postViewModel.removeById(post.id)
             }
 
             override fun onShare(post: Post) {
@@ -68,9 +70,12 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_posts_to_newPostFragment)
         }
 
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.posts)
+        lifecycleScope.launchWhenCreated {
+            postViewModel.data.collectLatest {
+                adapter.submitData(it)
+            }
         }
+
         return binding.root
     }
 }

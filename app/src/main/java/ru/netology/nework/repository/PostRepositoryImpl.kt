@@ -1,37 +1,46 @@
 package ru.netology.nework.repository
 
-import kotlinx.coroutines.Dispatchers
+import androidx.paging.*
 import kotlinx.coroutines.flow.*
 import ru.netology.nework.api.PostApiService
 import ru.netology.nework.dao.PostDao
+import ru.netology.nework.dao.PostRemoteKeyDao
+import ru.netology.nework.db.AppDb
 import ru.netology.nework.dto.Post
 import ru.netology.nework.entity.PostEntity
-import ru.netology.nework.entity.toDto
-import ru.netology.nework.entity.toEntity
+import ru.netology.nework.entity.toPostEntity
 import ru.netology.nework.error.ApiError
 import ru.netology.nework.error.NetworkError
 import ru.netology.nework.error.UnknownError
+import ru.netology.nework.mediator.PostRemoteMediator
 import java.io.IOException
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
     private val postDao: PostDao,
-    private val postApiService: PostApiService
+    private val postApiService: PostApiService,
+    postRemoteKeyDao: PostRemoteKeyDao,
+    appDb: AppDb
 ) : PostRepository {
 
-    override val data = postDao.getAll()
-        .map(List<PostEntity>::toDto)
-        .flowOn(Dispatchers.Default)
+    @OptIn(ExperimentalPagingApi::class)
+    override val data: Flow<PagingData<Post>> = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        remoteMediator = PostRemoteMediator(postApiService, postDao, postRemoteKeyDao, appDb),
+        pagingSourceFactory = { postDao.getPagingSource() },
+    )
+        .flow
+        .map { it.map(PostEntity::toDto) }
 
     override suspend fun getAll() {
         try {
-            postDao.getAll()
+            postDao.getPagingSource()
             val response = postApiService.getAll()
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
             val data = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(data.toEntity())
+            postDao.insert(data.toPostEntity())
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {

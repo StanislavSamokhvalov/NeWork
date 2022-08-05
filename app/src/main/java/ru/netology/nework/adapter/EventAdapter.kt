@@ -17,11 +17,11 @@ interface EventCallback {
 }
 
 class EventAdapter(
-    private val onInteractionListener: EventCallback,
+    private val eventCallback: EventCallback,
 ) : PagingDataAdapter<Event, EventViewHolder>(EventDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding = CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EventViewHolder(binding, onInteractionListener)
+        return EventViewHolder(binding, eventCallback)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
@@ -32,7 +32,7 @@ class EventAdapter(
 
 class EventViewHolder(
     private val binding: CardEventBinding,
-    private val onInteractionListener: EventCallback,
+    private val eventCallback: EventCallback,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(event: Event) {
