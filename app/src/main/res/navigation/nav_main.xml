@@ -44,7 +44,14 @@
     <fragment
         android:id="@+id/navigation_events"
         android:name="ru.netology.nework.ui.EventsFragment"
-        android:label="Events" />
+        android:label="Events" >
+        <action
+            android:id="@+id/action_navigation_events_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_navigation_events_to_navigation_users"
+            app:destination="@id/navigation_users" />
+    </fragment>
     <activity
         android:id="@+id/appActivity"
         android:name="ru.netology.nework.ui.AppActivity"

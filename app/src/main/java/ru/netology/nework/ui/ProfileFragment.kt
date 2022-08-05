@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.databinding.FragmentProfileBinding
-import ru.netology.nework.util.uploadingAvatar
+import ru.netology.nework.util.AndroidUtils.uploadingAvatar
 import ru.netology.nework.viewmodel.UserViewModel
 
 @AndroidEntryPoint

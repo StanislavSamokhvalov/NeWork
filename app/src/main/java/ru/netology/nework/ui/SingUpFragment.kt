@@ -21,7 +21,7 @@ class SingUpFragment : Fragment() {
     @Inject
     lateinit var appAuth: AppAuth
 
-    val viewModel: SignUpViewModel by viewModels()
+    val signUpViewModel: SignUpViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,19 +34,19 @@ class SingUpFragment : Fragment() {
             false
         )
 
-        viewModel.data.observe(viewLifecycleOwner) {
+        signUpViewModel.data.observe(viewLifecycleOwner) {
             appAuth.setAuth(it.id, it.token)
             findNavController().navigateUp()
         }
 
-        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+        signUpViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.errorRegistration)
                 Snackbar.make(
                     binding.root, R.string.error_loading,
                     BaseTransientBottomBar.LENGTH_INDEFINITE
                 )
                     .setAction(R.string.retry_loading) {
-                        viewModel.registerUser(
+                        signUpViewModel.registerUser(
                             binding.login.text.toString(),
                             binding.password.text.toString(),
                             binding.name.text.toString()
@@ -57,7 +57,7 @@ class SingUpFragment : Fragment() {
         with(binding) {
             signUpButton.setOnClickListener {
                 if (password.text.toString() == repeatPassword.text.toString()) {
-                    viewModel.registerUser(
+                    signUpViewModel.registerUser(
                         login.text.toString(),
                         password.text.toString(),
                         name.text.toString()

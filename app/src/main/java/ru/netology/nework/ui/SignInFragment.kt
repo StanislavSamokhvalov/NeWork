@@ -18,7 +18,7 @@ class SignInFragment : Fragment() {
     @Inject
     lateinit var appAuth: AppAuth
 
-    private val viewModel: SignInViewModel by viewModels()
+    private val signInViewModel: SignInViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,13 +31,13 @@ class SignInFragment : Fragment() {
             false
         )
 
-        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+        signInViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.errorLogin) {
                 binding.password.error = getString(R.string.error_auth)
             }
         }
 
-        viewModel.data.observe(viewLifecycleOwner) {
+        signInViewModel.data.observe(viewLifecycleOwner) {
             appAuth.setAuth(it.id, it.token)
             findNavController().navigateUp()
         }
@@ -45,7 +45,7 @@ class SignInFragment : Fragment() {
         with(binding) {
             login.requestFocus()
             signInButton.setOnClickListener {
-                viewModel.attemptLogin(
+                signInViewModel.attemptLogin(
                     login.text.toString(),
                     password.text.toString()
                 )

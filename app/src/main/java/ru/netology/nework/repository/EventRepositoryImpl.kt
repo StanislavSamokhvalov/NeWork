@@ -46,4 +46,78 @@ class EventRepositoryImpl @Inject constructor(
             throw UnknownError
         }
     }
+
+    override suspend fun joinById(id: Int) {
+        try {
+            val response = eventApiService.partyById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val data = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(data))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: java.lang.Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun unJoinById(id: Int) {
+        try {
+            val response = eventApiService.unPartyById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val data = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(data))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: java.lang.Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun likeById(id: Int) {
+        try {
+            val response = eventApiService.likeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val data = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(data))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: java.lang.Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun unlikeById(id: Int) {
+        try {
+            val response = eventApiService.unlikeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val data = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(data))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: java.lang.Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun removeById(id: Int) {
+        try {
+            val response = eventApiService.removeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            eventDao.removeById(id)
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: java.lang.Exception) {
+            throw UnknownError
+        }
+    }
 }

@@ -11,6 +11,7 @@
     <string name="name">Name</string>
     <string name="repeat_password">Repeat password</string>
     <string name="chooser_share_post">Share post</string>
+    <string name="chooser_share_event">Share event</string>
     <string name="error_auth">Invalid login or password</string>
     <string name="page_users">Users</string>
     <string name="page_profile">Profile</string>
@@ -32,4 +33,5 @@
     <string name="join_button">Join</string>
     <string name="participants_button">Party</string>
     <string name="play_video">Video start button</string>
+    <string name="add_event">add event</string>
 </resources>

@@ -44,6 +44,10 @@ class PostViewHolder(
             published.text = post.published
             content.text = post.content
 
+            like.setOnClickListener {
+                postCallback.onLike(post)
+            }
+
             menu.visibility = if (post.ownedByMe) View.VISIBLE else View.INVISIBLE
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {

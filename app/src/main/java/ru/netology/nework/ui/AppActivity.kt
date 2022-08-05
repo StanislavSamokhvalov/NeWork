@@ -25,7 +25,7 @@ class AppActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppBinding
 
-    private val viewModelAuth: AuthViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +58,7 @@ class AppActivity : AppCompatActivity() {
             }
         }
 
-        if (!viewModelAuth.authenticated) {
+        if (!authViewModel.authenticated) {
             findNavController(R.id.nav_host_fragment).navigate(R.id.signInFragment)
         }
     }

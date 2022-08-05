@@ -77,4 +77,48 @@ class EventViewModel @Inject constructor(
             _dataState.postValue(EventModelState(error = true))
         }
     }
+
+    fun edit(event: Event) {
+        edited.value = event
+    }
+
+    fun joinById(id:Int) = viewModelScope.launch {
+        try {
+            eventRepository.unJoinById(id)
+        } catch (e: Exception) {
+            _dataState.postValue(EventModelState(error = true))
+        }
+    }
+
+    fun unJoinById(id:Int) = viewModelScope.launch {
+        try {
+            eventRepository.unJoinById(id)
+        } catch (e: Exception) {
+            _dataState.postValue(EventModelState(error = true))
+        }
+    }
+
+    fun likeById(id:Int) = viewModelScope.launch {
+        try {
+            eventRepository.likeById(id)
+        } catch (e: Exception) {
+            _dataState.postValue(EventModelState(error = true))
+        }
+    }
+
+    fun unlikeById(id:Int) = viewModelScope.launch {
+        try {
+            eventRepository.unlikeById(id)
+        } catch (e: Exception) {
+            _dataState.postValue(EventModelState(error = true))
+        }
+    }
+
+    fun removeById(id: Int) = viewModelScope.launch {
+        try {
+            eventRepository.removeById(id)
+        } catch (e: Exception) {
+            _dataState.postValue(EventModelState(error = true))
+        }
+    }
 }

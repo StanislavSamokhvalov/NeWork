@@ -1,12 +1,10 @@
 package ru.netology.nework.ui
 
 import android.app.Activity
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toFile
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -20,13 +18,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.databinding.FragmentNewPostBinding
 import ru.netology.nework.util.AndroidUtils
-import ru.netology.nework.util.StringArg
 import ru.netology.nework.viewmodel.PostViewModel
 
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
 
-    private val viewModel: PostViewModel by viewModels()
+    private val postViewModel: PostViewModel by viewModels()
 
     private var fragmentBinding: FragmentNewPostBinding? = null
 
@@ -48,8 +45,8 @@ class NewPostFragment : Fragment() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                viewModel.changeContent(it.edit.text.toString())
-                                viewModel.save()
+                                postViewModel.changeContent(it.edit.text.toString())
+                                postViewModel.save()
                                 AndroidUtils.hideKeyboard(requireView())
                             }
                         }
@@ -74,7 +71,7 @@ class NewPostFragment : Fragment() {
         fragmentBinding = binding
 
         binding.edit.setText(
-            arguments?.getString("content") ?: viewModel.edited.value?.content
+            arguments?.getString("content") ?: postViewModel.edited.value?.content
         )
         binding.edit.requestFocus()
 
@@ -123,7 +120,7 @@ class NewPostFragment : Fragment() {
 //            viewModel.changePhoto(null, null, null)
 //        }
 
-        viewModel.postCreated.observe(viewLifecycleOwner) {
+        postViewModel.postCreated.observe(viewLifecycleOwner) {
 
             findNavController().navigateUp()
         }

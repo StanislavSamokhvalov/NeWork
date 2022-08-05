@@ -1,12 +1,16 @@
 package ru.netology.nework.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.nework.R
 import ru.netology.nework.databinding.CardEventBinding
 import ru.netology.nework.dto.Event
+import ru.netology.nework.util.AndroidUtils.uploadingAvatar
 
 
 interface EventCallback {
@@ -14,6 +18,9 @@ interface EventCallback {
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
     fun onShare(event: Event) {}
+    fun onJoin(event: Event) {}
+    fun onParty(event: Event) {}
+    fun onSpeakers(event: Event) {}
 }
 
 class EventAdapter(
@@ -37,11 +44,53 @@ class EventViewHolder(
 
     fun bind(event: Event) {
         with(binding) {
+            uploadingAvatar(avatar, event.authorAvatar)
             author.text = event.author
             published.text = event.published
             content.text = event.content
             eventDateEdit.text = event.datetime
             eventFormatEdit.text = event.type.toString()
+
+            speakers.setOnClickListener {
+                eventCallback.onSpeakers(event)
+            }
+
+            participants.setOnClickListener {
+                eventCallback.onParty(event)
+            }
+
+            join.setOnClickListener {
+                eventCallback.onJoin(event)
+            }
+
+            like.setOnClickListener {
+                eventCallback.onLike(event)
+            }
+
+            share.setOnClickListener {
+                eventCallback.onShare(event)
+            }
+
+            menu.visibility = if (event.ownedByMe) View.VISIBLE else View.INVISIBLE
+            menu.setOnClickListener {
+                PopupMenu(it.context, it).apply {
+                    inflate(R.menu.options_post)
+                    menu.setGroupVisible(R.id.owned, event.ownedByMe)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.remove -> {
+                                eventCallback.onRemove(event)
+                                true
+                            }
+                            R.id.edit -> {
+                                eventCallback.onEdit(event)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                }.show()
+            }
         }
     }
 

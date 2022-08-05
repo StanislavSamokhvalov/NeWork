@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.card_user.view.*
 import ru.netology.nework.R
 import ru.netology.nework.adapter.UserCallback
 import ru.netology.nework.adapter.UsersAdapter
@@ -21,7 +20,7 @@ private const val UserId = "USER_ID"
 @AndroidEntryPoint
 class UsersFragment : Fragment() {
 
-    private val viewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private val bundle = Bundle()
 
     override fun onCreateView(
@@ -32,7 +31,7 @@ class UsersFragment : Fragment() {
         val binding = FragmentUsersBinding.inflate(inflater, container, false)
         val adapter = UsersAdapter(object : UserCallback {
             override fun onUser(user: User) {
-                viewModel.openUser(user.id)
+                userViewModel.openUser(user.id)
                 bundle.putInt("USER_ID", user.id)
                 findNavController().navigate(R.id.navigation_profile, bundle)
             }
@@ -40,7 +39,7 @@ class UsersFragment : Fragment() {
 
         binding.list.adapter = adapter
 
-        viewModel.data.observe(viewLifecycleOwner) { state ->
+        userViewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.users)
         }
 

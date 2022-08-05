@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.netology.nework.util.uploadingAvatar
+import ru.netology.nework.util.AndroidUtils.uploadingAvatar
 
 
 interface UserCallback {
