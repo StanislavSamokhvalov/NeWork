@@ -33,5 +33,16 @@
     <string name="join_button">Join</string>
     <string name="participants_button">Party</string>
     <string name="play_video">Video start button</string>
-    <string name="add_event">add event</string>
+    <string name="add_event">Add event</string>
+    <string name="media_chooser">Select application</string>
+    <string name="empty_like_owners">Not liked</string>
+    <string name="empty_participants">No participants</string>
+    <string name="empty_speakers">No speakers</string>
+    <string name="join_button_checked">Joined</string>
+    <string name="join_button_unchecked">Join</string>
+    <string name="date_text">Date:</string>
+    <string name="format_event_text">Format:</string>
+    <string name="error_play_audio">No application to play audio</string>
+    <string name="error_play_video">No application to play video</string>
+    <string name="logout_button">Log out</string>
 </resources>

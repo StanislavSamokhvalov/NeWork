@@ -84,7 +84,7 @@ class EventViewModel @Inject constructor(
 
     fun joinById(id:Int) = viewModelScope.launch {
         try {
-            eventRepository.unJoinById(id)
+            eventRepository.joinById(id)
         } catch (e: Exception) {
             _dataState.postValue(EventModelState(error = true))
         }

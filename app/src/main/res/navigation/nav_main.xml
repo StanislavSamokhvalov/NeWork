@@ -11,7 +11,11 @@
         android:label="SignIn" >
         <action
             android:id="@+id/action_signInFragment_to_singUpFragment"
-            app:destination="@id/singUpFragment" />
+            app:destination="@id/singUpFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/navigation_posts"
@@ -19,10 +23,18 @@
         android:label="Posts" >
         <action
             android:id="@+id/action_feedFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <action
             android:id="@+id/action_navigation_posts_to_newPostFragment"
-            app:destination="@id/newPostFragment" />
+            app:destination="@id/newPostFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/singUpFragment"
@@ -30,7 +42,11 @@
         android:label="SingUp" >
         <action
             android:id="@+id/action_singUpFragment_to_feedFragment"
-            app:destination="@id/navigation_posts" />
+            app:destination="@id/navigation_posts"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/navigation_users"
@@ -40,17 +56,40 @@
     <fragment
         android:id="@+id/navigation_profile"
         android:name="ru.netology.nework.ui.ProfileFragment"
-        android:label="Profile" />
+        android:label="Profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
+    </fragment>
     <fragment
         android:id="@+id/navigation_events"
         android:name="ru.netology.nework.ui.EventsFragment"
         android:label="Events" >
         <action
             android:id="@+id/action_navigation_events_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <action
             android:id="@+id/action_navigation_events_to_navigation_users"
-            app:destination="@id/navigation_users" />
+            app:destination="@id/navigation_users"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_navigation_events_to_bottomSheetFragment"
+            app:destination="@id/bottomSheetFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <activity
         android:id="@+id/appActivity"
@@ -62,6 +101,18 @@
         android:label="Create new post" >
         <action
             android:id="@+id/action_newPostFragment_to_navigation_posts"
-            app:destination="@id/navigation_posts" />
+            app:destination="@id/navigation_posts"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
+    <fragment
+        android:id="@+id/singleImageFragment"
+        android:name="ru.netology.nework.ui.SingleImageFragment"
+        android:label="Image" />
+    <dialog
+        android:id="@+id/bottomSheetFragment"
+        android:name="ru.netology.nework.ui.BottomSheetFragment"
+        android:label="BottomSheetFragment" />
 </navigation>

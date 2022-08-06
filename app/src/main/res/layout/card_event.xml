@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/avatar"
+            android:id="@+id/userAvatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="@dimen/common_spacing"
@@ -34,7 +34,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/published"
             app:layout_constraintEnd_toStartOf="@id/menu"
-            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintStart_toEndOf="@id/userAvatar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="Name Author" />
@@ -49,7 +49,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/barrier_top"
             app:layout_constraintEnd_toStartOf="@id/menu"
-            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintStart_toEndOf="@id/userAvatar"
             app:layout_constraintTop_toBottomOf="@id/author"
             tools:text="Published" />
 
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="avatar,published,menu"
+            app:constraint_referenced_ids="userAvatar,published,menu"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="80dp" />
 
@@ -80,12 +80,13 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:padding="@dimen/common_spacing"
+            android:text="@string/date_text"
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="normal"
+            app:layout_constraintEnd_toEndOf="@+id/event_format"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier_top"
-            tools:text="Date:" />
+            app:layout_constraintTop_toBottomOf="@id/barrier_top" />
 
         <TextView
             android:id="@+id/event_format"
@@ -96,9 +97,9 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="normal"
+            android:text="@string/format_event_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_date"
-            tools:text="Format:" />
+            app:layout_constraintTop_toBottomOf="@id/event_date" />
 
         <TextView
             android:id="@+id/event_format_edit"

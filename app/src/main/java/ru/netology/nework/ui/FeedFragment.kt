@@ -1,10 +1,12 @@
 package ru.netology.nework.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,10 +16,10 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nework.R
 import ru.netology.nework.adapter.PostCallback
 import ru.netology.nework.adapter.PostsAdapter
-import ru.netology.nework.viewmodel.PostViewModel
 import ru.netology.nework.databinding.FragmentFeedBinding
 import ru.netology.nework.dto.Post
 import ru.netology.nework.viewmodel.AuthViewModel
+import ru.netology.nework.viewmodel.PostViewModel
 
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
@@ -37,13 +39,16 @@ class FeedFragment : Fragment() {
             override fun onEdit(post: Post) {
                 postViewModel.edit(post)
                 val bundle = Bundle().apply {
-                    putString("content", post.content)}
+                    putString("content", post.content)
+                }
                 findNavController().navigate(R.id.newPostFragment, bundle)
             }
 
             override fun onLike(post: Post) {
                 if (authViewModel.authenticated) {
-                    if (!post.likedByMe) postViewModel.likeById(post.id) else postViewModel.unlikeById(post.id)
+                    if (!post.likedByMe) postViewModel.likeById(post.id) else postViewModel.unlikeById(
+                        post.id
+                    )
                 } else findNavController().navigate(R.id.action_feedFragment_to_signInFragment)
             }
 
@@ -61,6 +66,42 @@ class FeedFragment : Fragment() {
                 val shareIntent =
                     Intent.createChooser(intent, getString(R.string.chooser_share_post))
                 startActivity(shareIntent)
+            }
+
+            override fun onAudio(post: Post) {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.attachment?.url))
+                    val audioIntent =
+                        Intent.createChooser(intent, getString(R.string.media_chooser))
+                    startActivity(audioIntent)
+                } catch (e: Exception) {
+                    Toast.makeText(context, R.string.error_play_audio, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onVideo(post: Post) {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.attachment?.url))
+                    val videoIntent =
+                        Intent.createChooser(intent, getString(R.string.media_chooser))
+                    startActivity(videoIntent)
+                } catch (e: Exception) {
+                    Toast.makeText(context, R.string.error_play_video, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onOpenImage(post: Post) {
+                val bundle = Bundle().apply {
+                    putString("url", post.attachment?.url)
+                }
+                findNavController().navigate(R.id.singleImageFragment, bundle)
+            }
+
+            override fun onOpenAvatar(post: Post) {
+                val bundle = Bundle().apply {
+                    putString("url", post.authorAvatar)
+                }
+                findNavController().navigate(R.id.singleImageFragment, bundle)
             }
         })
 

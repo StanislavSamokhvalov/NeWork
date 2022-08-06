@@ -15,7 +15,7 @@ import ru.netology.nework.databinding.FragmentUsersBinding
 import ru.netology.nework.dto.User
 import ru.netology.nework.viewmodel.UserViewModel
 
-private const val UserId = "USER_ID"
+const val USER_ID = "USER_ID"
 
 @AndroidEntryPoint
 class UsersFragment : Fragment() {
@@ -32,7 +32,9 @@ class UsersFragment : Fragment() {
         val adapter = UsersAdapter(object : UserCallback {
             override fun onUser(user: User) {
                 userViewModel.openUser(user.id)
-                bundle.putInt("USER_ID", user.id)
+                bundle.putInt("id", user.id)
+                bundle.putString("url", user.avatar)
+                bundle.putString("name", user.name)
                 findNavController().navigate(R.id.navigation_profile, bundle)
             }
         })

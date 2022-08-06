@@ -21,6 +21,10 @@ interface EventCallback {
     fun onJoin(event: Event) {}
     fun onParty(event: Event) {}
     fun onSpeakers(event: Event) {}
+    fun onLikeOwners(event: Event) {}
+    fun onAudio(event: Event) {}
+    fun onVideo(event: Event) {}
+    fun onOpenAvatar(event: Event) {}
 }
 
 class EventAdapter(
@@ -44,12 +48,17 @@ class EventViewHolder(
 
     fun bind(event: Event) {
         with(binding) {
-            uploadingAvatar(avatar, event.authorAvatar)
+            uploadingAvatar(userAvatar, event.authorAvatar)
             author.text = event.author
             published.text = event.published
             content.text = event.content
             eventDateEdit.text = event.datetime
             eventFormatEdit.text = event.type.toString()
+            like.isChecked = event.likedByMe
+
+            userAvatar.setOnClickListener {
+                eventCallback.onOpenAvatar(event)
+            }
 
             speakers.setOnClickListener {
                 eventCallback.onSpeakers(event)
@@ -60,6 +69,7 @@ class EventViewHolder(
             }
 
             join.setOnClickListener {
+                if (join.isChecked) join.setText(R.string.join_button_checked) else join.setText(R.string.join_button_unchecked)
                 eventCallback.onJoin(event)
             }
 
