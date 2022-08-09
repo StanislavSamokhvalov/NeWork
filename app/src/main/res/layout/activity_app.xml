@@ -26,6 +26,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_main"
         tools:context=".ui.AppActivity"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_posts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

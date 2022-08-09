@@ -8,13 +8,16 @@ interface EventApiService {
     @GET("events")
     suspend fun getAll(): Response<List<Event>>
 
+    @POST("events")
+    suspend fun save(@Body event: Event): Response<Event>
+
     @POST("events/{id}/participants")
     suspend fun partyById(@Path("id") id: Int): Response<Event>
 
     @DELETE("events/{id}/participants")
     suspend fun unPartyById(@Path("id") id: Int): Response<Event>
 
-    @DELETE("events/{event_id}")
+    @DELETE("events/{id}")
     suspend fun removeById(@Path("id") id: Int): Response<Unit>
 
     @DELETE("events/{id}/likes")

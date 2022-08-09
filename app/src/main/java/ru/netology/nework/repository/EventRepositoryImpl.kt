@@ -47,8 +47,24 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun save(event: Event) {
+        try {
+            val response = eventApiService.save(event)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val data = response.body() ?: throw ApiError(response.code(), response.message())
+            eventDao.insert(EventEntity.fromDto(data))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: java.lang.Exception) {
+            throw UnknownError
+        }
+    }
+
     override suspend fun joinById(id: Int) {
         try {
+            eventDao.participateById(id)
             val response = eventApiService.partyById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -64,6 +80,7 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun unJoinById(id: Int) {
         try {
+            eventDao.unParticipateById(id)
             val response = eventApiService.unPartyById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -79,6 +96,7 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun likeById(id: Int) {
         try {
+            eventDao.likeById(id)
             val response = eventApiService.likeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -94,6 +112,7 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun unlikeById(id: Int) {
         try {
+            eventDao.unLikeById(id)
             val response = eventApiService.unlikeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -109,11 +128,11 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun removeById(id: Int) {
         try {
+            eventDao.removeById(id)
             val response = eventApiService.removeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            eventDao.removeById(id)
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: java.lang.Exception) {

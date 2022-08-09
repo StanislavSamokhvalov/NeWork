@@ -11,18 +11,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nework.R
 import ru.netology.nework.adapter.PostCallback
 import ru.netology.nework.adapter.PostsAdapter
-import ru.netology.nework.databinding.FragmentFeedBinding
+import ru.netology.nework.databinding.FragmentPostsBinding
 import ru.netology.nework.dto.Post
 import ru.netology.nework.viewmodel.AuthViewModel
 import ru.netology.nework.viewmodel.PostViewModel
 
 @AndroidEntryPoint
-class FeedFragment : Fragment() {
+class PostsFragment : Fragment() {
 
     private val postViewModel: PostViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
@@ -33,7 +34,7 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val binding = FragmentFeedBinding.inflate(inflater, container, false)
+        val binding = FragmentPostsBinding.inflate(inflater, container, false)
 
         val adapter = PostsAdapter(object : PostCallback {
             override fun onEdit(post: Post) {
@@ -109,6 +110,17 @@ class FeedFragment : Fragment() {
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_posts_to_newPostFragment)
+        }
+
+        binding.swiperefresh.setOnRefreshListener {
+            postViewModel.refreshPosts()
+        }
+
+        postViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.swiperefresh.isRefreshing = state.refreshing
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG).show()
+            }
         }
 
         lifecycleScope.launchWhenCreated {

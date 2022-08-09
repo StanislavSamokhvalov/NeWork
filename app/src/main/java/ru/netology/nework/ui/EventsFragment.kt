@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -19,7 +20,6 @@ import ru.netology.nework.adapter.EventAdapter
 import ru.netology.nework.adapter.EventCallback
 import ru.netology.nework.databinding.FragmentEventsBinding
 import ru.netology.nework.dto.Event
-import ru.netology.nework.dto.Post
 import ru.netology.nework.viewmodel.AuthViewModel
 import ru.netology.nework.viewmodel.EventViewModel
 import ru.netology.nework.viewmodel.UserViewModel
@@ -75,7 +75,6 @@ class EventsFragment : Fragment() {
                     Toast.makeText(context, R.string.error_play_video, Toast.LENGTH_SHORT).show()
                 }
             }
-
 
             override fun onAudio(event: Event) {
                 try {
@@ -133,7 +132,7 @@ class EventsFragment : Fragment() {
                         findNavController().navigate(R.id.action_navigation_events_to_bottomSheetFragment)
                     }
                 } else findNavController().navigate(R.id.action_navigation_events_to_signInFragment)
-            }
+            }//TODO("ADD LIKE OWNER BUTTON")
 
             override fun onOpenAvatar(event: Event) {
                 val bundle = Bundle().apply {
@@ -146,17 +145,25 @@ class EventsFragment : Fragment() {
 
         binding.list.adapter = adapter
 
-        lifecycleScope.launchWhenCreated{
+        lifecycleScope.launchWhenCreated {
             eventViewModel.data.collectLatest {
                 adapter.submitData(it)
             }
         }
 
-        eventViewModel.dataState.observe(viewLifecycleOwner)
-        { state ->
+        eventViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.swiperefresh.isRefreshing = state.refreshing
             if (state.error) {
-                Toast.makeText(context, R.string.error_loading, Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG).show()
             }
+        }
+
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_events_to_fragmentNewEvent)
+        }
+
+        binding.swiperefresh.setOnRefreshListener {
+            eventViewModel.refreshEvents()
         }
 
         return binding.root

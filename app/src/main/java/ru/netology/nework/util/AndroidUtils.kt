@@ -6,6 +6,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import ru.netology.nework.R
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 object AndroidUtils {
     fun hideKeyboard(view: View) {
@@ -20,6 +23,15 @@ object AndroidUtils {
             .placeholder(R.drawable.ic_face_24dp)
             .timeout(10_000)
             .into(view)
+    }
+
+    fun formatDateTime(value: String): String {
+        return if (value != " ") {
+            val date = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).parse(value)
+            val formatter = DateTimeFormatter.ISO_INSTANT
+0
+            formatter.format(date?.toInstant())
+        } else "2021-08-17T16:46:58.887547Z"
     }
 }
 

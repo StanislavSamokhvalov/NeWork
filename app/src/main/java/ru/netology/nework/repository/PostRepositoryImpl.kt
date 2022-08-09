@@ -50,6 +50,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun likeById(id: Int) {
         try {
+            postDao.likeById(id)
             val response = postApiService.likeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -65,6 +66,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun unlikeById(id: Int) {
         try {
+            postDao.unLikeById(id)
             val response = postApiService.unlikeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -130,6 +132,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun removeById(id: Int) {
         try {
+            postDao.removeById(id)
             val response = postApiService.removeById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())

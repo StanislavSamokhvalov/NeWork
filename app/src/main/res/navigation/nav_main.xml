@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_posts"
-        android:name="ru.netology.nework.ui.FeedFragment"
+        android:name="ru.netology.nework.ui.PostsFragment"
         android:label="Posts" >
         <action
             android:id="@+id/action_feedFragment_to_signInFragment"
@@ -90,6 +90,9 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_navigation_events_to_fragmentNewEvent"
+            app:destination="@id/fragmentNewEvent" />
     </fragment>
     <activity
         android:id="@+id/appActivity"
@@ -115,4 +118,8 @@
         android:id="@+id/bottomSheetFragment"
         android:name="ru.netology.nework.ui.BottomSheetFragment"
         android:label="BottomSheetFragment" />
+    <fragment
+        android:id="@+id/fragmentNewEvent"
+        android:name="ru.netology.nework.ui.NewEventFragment"
+        android:label="FragmentNewEvent" />
 </navigation>

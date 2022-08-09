@@ -21,4 +21,16 @@ interface EventDao {
 
     @Query("DELETE FROM EventEntity WHERE id = :id")
     suspend fun removeById(id: Int)
+
+    @Query("UPDATE EventEntity SET participatedByMe = 1 WHERE id = :id AND participatedByMe = 0")
+    suspend fun participateById(id: Int)
+
+    @Query("UPDATE EventEntity SET participatedByMe = 0 WHERE id = :id AND participatedByMe = 1")
+    suspend fun unParticipateById(id: Int)
+
+    @Query("UPDATE EventEntity SET likedByMe = 1 WHERE id = :id AND likedByMe = 0")
+    suspend fun likeById(id: Int)
+
+    @Query("UPDATE EventEntity SET likedByMe = 0 WHERE id = :id AND likedByMe = 1")
+    suspend fun unLikeById(id: Int)
 }

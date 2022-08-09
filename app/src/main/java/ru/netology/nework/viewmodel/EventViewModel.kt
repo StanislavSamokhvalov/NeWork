@@ -1,18 +1,13 @@
 package ru.netology.nework.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.lifecycle.switchMap
 import androidx.paging.PagingData
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.dto.Event
@@ -38,7 +33,7 @@ private val empty = Event(
 class EventViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     appAuth: AppAuth
-): ViewModel() {
+) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val data: Flow<PagingData<Event>> = appAuth.authStateFlow
@@ -78,11 +73,47 @@ class EventViewModel @Inject constructor(
         }
     }
 
+    fun save() = edited.value?.let { event ->
+        _eventCreated.value = Unit
+        viewModelScope.launch {
+            try {
+                _dataState.postValue(EventModelState(loading = true))
+                eventRepository.save(event)
+                _dataState.postValue(EventModelState())
+            } catch (e: Exception) {
+                _dataState.postValue(EventModelState(error = true))
+            }
+        }
+        edited.value = empty
+    }
+
+    fun changeContent(content: String, date: String) {
+        edited.value?.let {
+            val text = content.trim()
+            if (edited.value?.content != text) {
+                edited.value = edited.value?.copy(content = text)
+            }
+            if (edited.value?.datetime != date) {
+                edited.value = edited.value?.copy(datetime = date)
+            }
+        }
+    }
+
+    fun refreshEvents() = viewModelScope.launch {
+        try {
+            _dataState.postValue(EventModelState(refreshing = true))
+            eventRepository.getAll()
+            _dataState.postValue(EventModelState())
+        } catch (e: Exception) {
+            _dataState.postValue(EventModelState(error = true))
+        }
+    }
+
     fun edit(event: Event) {
         edited.value = event
     }
 
-    fun joinById(id:Int) = viewModelScope.launch {
+    fun joinById(id: Int) = viewModelScope.launch {
         try {
             eventRepository.joinById(id)
         } catch (e: Exception) {
@@ -90,7 +121,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun unJoinById(id:Int) = viewModelScope.launch {
+    fun unJoinById(id: Int) = viewModelScope.launch {
         try {
             eventRepository.unJoinById(id)
         } catch (e: Exception) {
@@ -98,7 +129,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun likeById(id:Int) = viewModelScope.launch {
+    fun likeById(id: Int) = viewModelScope.launch {
         try {
             eventRepository.likeById(id)
         } catch (e: Exception) {
@@ -106,7 +137,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun unlikeById(id:Int) = viewModelScope.launch {
+    fun unlikeById(id: Int) = viewModelScope.launch {
         try {
             eventRepository.unlikeById(id)
         } catch (e: Exception) {
