@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.filter
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nework.auth.AppAuth
+import ru.netology.nework.dto.MediaUpload
 import ru.netology.nework.dto.Post
 import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.model.MediaModel
@@ -46,7 +48,12 @@ class PostViewModel @Inject constructor(
         .flatMapLatest { (myId, _) ->
             postRepository.data.map { posts ->
                 posts.map {
-                    it.copy(ownedByMe = it.authorId == myId)
+                    it.copy(
+                        ownedByMe = it.authorId == myId,
+                        likedByMe = it.likeOwnerIds.contains(myId)
+                    )
+                }.filter { validPost ->
+                    !hidePosts.contains(validPost)
                 }
             }
         }.flowOn(Dispatchers.Default)
@@ -60,17 +67,22 @@ class PostViewModel @Inject constructor(
         get() = _postCreated
 
     private val noMedia = MediaModel()
-    val _media = MutableLiveData(noMedia)
+
+    private val _media = MutableLiveData(noMedia)
     val media: LiveData<MediaModel>
         get() = _media
 
-    val edited = MutableLiveData(empty)
+    private val _edited = MutableLiveData(empty)
+    val edited: LiveData<Post>
+        get() = _edited
+
+    private val hidePosts = mutableSetOf<Post>()
 
     init {
         loadPosts()
     }
 
-    fun loadPosts() = viewModelScope.launch {
+    private fun loadPosts() = viewModelScope.launch {
         try {
             _dataState.postValue(PostModelState(loading = true))
             postRepository.getAll()
@@ -87,11 +99,13 @@ class PostViewModel @Inject constructor(
                 try {
                     when (_media.value) {
                         noMedia -> postRepository.save(post)
-//                        else -> _media.value?.inputStream?.let {
-//                            MediaUpload(it)
-//                        }?.let {
-//                            repository.saveWithAttachment(post, it, _media.value?.type!!)
-//                        }
+                        else -> _media.value?.inputStream?.let { stream ->
+                            postRepository.saveWithAttachment(
+                                post,
+                                MediaUpload(stream),
+                                _media.value?.type!!
+                            )
+                        }
                     }
                     _dataState.value = PostModelState()
                     _postCreated.value = Unit
@@ -99,7 +113,7 @@ class PostViewModel @Inject constructor(
                     _dataState.value = PostModelState(error = true)
                 }
             }
-            edited.value = empty
+            _edited.value = empty
             _media.value = noMedia
         }
     }
@@ -114,16 +128,16 @@ class PostViewModel @Inject constructor(
         }
     }
 
+    fun changeMedia(uri: Uri?, inputStream: InputStream?, type: AttachmentType?) {
+        _media.value = MediaModel(uri, inputStream, type)
+    }
+
     fun changeContent(content: String) {
         val text = content.trim()
         if (edited.value?.content == text) {
             return
         }
-        edited.value = edited.value?.copy(content = text)
-    }
-
-    fun changeMedia(uri: Uri?, inputStream: InputStream, type: AttachmentType) {
-        _media.value = MediaModel(uri, inputStream, type)
+        _edited.value = edited.value?.copy(content = text)
     }
 
     fun likeById(id: Int) = viewModelScope.launch {
@@ -150,7 +164,14 @@ class PostViewModel @Inject constructor(
         }
     }
 
+    fun hidePost(post: Post) {
+        hidePosts.add(post)
+        viewModelScope.launch {
+            postRepository.getAll()
+        }
+    }
+
     fun edit(post: Post) {
-        edited.value = post
+        _edited.value = post
     }
 }

@@ -1,13 +1,10 @@
 package ru.netology.nework.adapter
 
-import android.os.Bundle
-import android.provider.Settings.Global.putString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +18,7 @@ import ru.netology.nework.util.AndroidUtils.uploadingAvatar
 interface PostCallback {
     fun onLike(post: Post) {}
     fun onEdit(post: Post) {}
+    fun onHide(post: Post) {}
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
     fun onVideo(post: Post) {}
@@ -85,12 +83,16 @@ class PostViewHolder(
                 postCallback.onAudio(post)
             }
 
+            like.setOnClickListener {
+                postCallback.onLike(post)
+            }
+
             share.setOnClickListener {
                 postCallback.onShare(post)
             }
 
-            like.setOnClickListener {
-                postCallback.onLike(post)
+            hide.setOnClickListener {
+                postCallback.onHide(post)
             }
 
             menu.visibility = if (post.ownedByMe) View.VISIBLE else View.INVISIBLE

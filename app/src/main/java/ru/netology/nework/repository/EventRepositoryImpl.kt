@@ -110,7 +110,7 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun unlikeById(id: Int) {
+    override suspend fun unLikeById(id: Int) {
         try {
             eventDao.unLikeById(id)
             val response = eventApiService.unlikeById(id)

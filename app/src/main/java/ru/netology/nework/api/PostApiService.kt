@@ -1,8 +1,10 @@
 package ru.netology.nework.api
 
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.netology.nework.dto.Event
+import ru.netology.nework.dto.Media
 import ru.netology.nework.dto.Post
 
 
@@ -30,4 +32,9 @@ interface PostApiService {
 
     @POST("posts/{id}/likes")
     suspend fun likeById(@Path("id") id: Int): Response<Post>
+
+    @Multipart
+    @POST("media")
+    suspend fun upload(@Part media: MultipartBody.Part): Response<Media>
+
 }

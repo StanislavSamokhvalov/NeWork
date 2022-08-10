@@ -2,6 +2,7 @@ package ru.netology.nework.model
 
 import android.net.Uri
 import ru.netology.nework.enumeration.AttachmentType
+import java.io.File
 import java.io.InputStream
 
 data class MediaModel(

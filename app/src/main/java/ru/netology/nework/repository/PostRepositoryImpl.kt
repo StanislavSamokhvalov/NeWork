@@ -2,13 +2,20 @@ package ru.netology.nework.repository
 
 import androidx.paging.*
 import kotlinx.coroutines.flow.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nework.api.PostApiService
 import ru.netology.nework.dao.PostDao
 import ru.netology.nework.dao.PostRemoteKeyDao
 import ru.netology.nework.db.AppDb
+import ru.netology.nework.dto.Attachment
+import ru.netology.nework.dto.Media
+import ru.netology.nework.dto.MediaUpload
 import ru.netology.nework.dto.Post
 import ru.netology.nework.entity.PostEntity
 import ru.netology.nework.entity.toPostEntity
+import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.error.ApiError
 import ru.netology.nework.error.NetworkError
 import ru.netology.nework.error.UnknownError
@@ -22,7 +29,6 @@ class PostRepositoryImpl @Inject constructor(
     postRemoteKeyDao: PostRemoteKeyDao,
     appDb: AppDb
 ) : PostRepository {
-
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<Post>> = Pager(
         config = PagingConfig(pageSize = 10, enablePlaceholders = false),
@@ -41,6 +47,55 @@ class PostRepositoryImpl @Inject constructor(
             }
             val data = response.body() ?: throw ApiError(response.code(), response.message())
             postDao.insert(data.toPostEntity())
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun save(post: Post) {
+        try {
+            val response = postApiService.save(post)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val data = response.body() ?: throw ApiError(response.code(), response.message())
+            postDao.insert(PostEntity.fromDto(data))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun saveWithAttachment(post: Post, upload: MediaUpload, type: AttachmentType) {
+        try {
+            val media = upload(upload)
+            val postWithAttachment =
+                post.copy(attachment = Attachment(media.url,  type))
+            save(postWithAttachment)
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: java.lang.Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun upload(upload: MediaUpload): Media {
+        try {
+            val media = MultipartBody.Part.createFormData(
+                "file", "name", upload.inputStream.readBytes()
+                    .toRequestBody(
+                        "*/*".toMediaType()
+                    )
+            )
+            val response = postApiService.upload(media)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            return response.body() ?: throw ApiError(response.code(), response.message())
+
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -80,56 +135,6 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-//    override suspend fun saveWithAttachment(post: Post, upload: MediaUpload, type: AttachmentType) {
-//                try {
-//            val media = uploadWithContent(upload)
-//            val postWithAttachment =
-//                post.copy(attachment = Attachment(media., type))
-//            save(postWithAttachment)
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        } catch (e: Exception) {
-//            throw UnknownError
-//        }
-//    }
-
-//    override suspend fun uploadWithContent(upload: MediaUpload): Media {
-//        try {
-//            val media = MultipartBody.Part.createFormData(
-//                "file", upload.file.name, upload.file.asRequestBody()
-//            )
-//
-//            val content = MultipartBody
-//                .Part.createFormData("content", "any text")
-//
-//            val response = api.uploadWithContent(media, content)
-//            if (!response.isSuccessful) {
-//                throw ApiError(response.code(), response.message())
-//            }
-//            return response.body() ?: throw ApiError(response.code(), response.message())
-//
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        } catch (e: Exception) {
-//            throw UnknownError
-//        }
-//    }
-
-    override suspend fun save(post: Post) {
-        try {
-            val response = postApiService.save(post)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            val data = response.body() ?: throw ApiError(response.code(), response.message())
-            postDao.insert(PostEntity.fromDto(data))
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw UnknownError
-        }
-    }
-
     override suspend fun removeById(id: Int) {
         try {
             postDao.removeById(id)
@@ -144,32 +149,4 @@ class PostRepositoryImpl @Inject constructor(
             throw UnknownError
         }
     }
-
-    //    override suspend fun getNewerPosts() {
-//        try {
-//            postDao.getNewer()
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        } catch (e: Exception) {
-//            throw UnknownError
-//        }
-//    }
-//
-//
-
-
-//    override fun getNewerCount(id: Int): Flow<Int> = flow {
-//        while (true) {
-//            delay(10_000L)
-//            val response = api.getNewer(id)
-//            if (!response.isSuccessful) {
-//                throw ApiError(response.code(), response.message())
-//            }
-//            val data = response.body() ?: throw ApiError(response.code(), response.message())
-//            postDao.insert(data.toEntity())
-//            emit(data.size)
-//        }
-//    }
-//        .catch { e -> throw AppError.from(e) }
-//        .flowOn(Dispatchers.Default)
 }

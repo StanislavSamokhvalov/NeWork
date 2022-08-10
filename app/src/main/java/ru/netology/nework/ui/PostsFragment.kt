@@ -37,6 +37,7 @@ class PostsFragment : Fragment() {
         val binding = FragmentPostsBinding.inflate(inflater, container, false)
 
         val adapter = PostsAdapter(object : PostCallback {
+
             override fun onEdit(post: Post) {
                 postViewModel.edit(post)
                 val bundle = Bundle().apply {
@@ -67,6 +68,10 @@ class PostsFragment : Fragment() {
                 val shareIntent =
                     Intent.createChooser(intent, getString(R.string.chooser_share_post))
                 startActivity(shareIntent)
+            }
+
+            override fun onHide(post: Post) {
+                postViewModel.hidePost(post)
             }
 
             override fun onAudio(post: Post) {

@@ -55,7 +55,7 @@
                 android:textColor="@color/primaryTextColor" />
 
             <FrameLayout
-                android:id="@+id/photoContainer"
+                android:id="@+id/mediaContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

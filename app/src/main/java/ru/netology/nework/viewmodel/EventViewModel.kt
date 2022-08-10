@@ -1,7 +1,6 @@
 package ru.netology.nework.viewmodel
 
 import androidx.lifecycle.*
-import androidx.lifecycle.switchMap
 import androidx.paging.PagingData
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -139,7 +138,7 @@ class EventViewModel @Inject constructor(
 
     fun unlikeById(id: Int) = viewModelScope.launch {
         try {
-            eventRepository.unlikeById(id)
+            eventRepository.unLikeById(id)
         } catch (e: Exception) {
             _dataState.postValue(EventModelState(error = true))
         }

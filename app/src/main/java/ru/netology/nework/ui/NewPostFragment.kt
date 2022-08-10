@@ -1,6 +1,7 @@
 package ru.netology.nework.ui
 
 import android.app.Activity
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -17,11 +18,15 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.databinding.FragmentNewPostBinding
+import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.util.AndroidUtils
 import ru.netology.nework.viewmodel.PostViewModel
 
+
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
+
+    var type: AttachmentType? = null
 
     private val postViewModel: PostViewModel by viewModels()
 
@@ -76,34 +81,44 @@ class NewPostFragment : Fragment() {
         binding.edit.requestFocus()
 
         val pickPhotoLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                when (it.resultCode) {
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+                when (activityResult.resultCode) {
                     ImagePicker.RESULT_ERROR -> {
                         Snackbar.make(
                             binding.root,
-                            ImagePicker.getError(it.data),
+                            ImagePicker.getError(activityResult.data),
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
                     Activity.RESULT_OK -> {
-//                        val uri: Uri? = it.data?.data
-//                        viewModel.changeMedia(uri, uri?.toFile())
+                        val uri: Uri? = activityResult.data?.data
+                        val stream = uri?.let { context?.contentResolver?.openInputStream(it) }
+                        postViewModel.changeMedia(uri, stream, type)
                     }
                 }
             }
 
+        val pickMediaLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent())  { uri ->
+                uri?.let {
+                    val stream = context?.contentResolver?.openInputStream(it)
+                    postViewModel.changeMedia(it, stream, type)
+                }
+            }
+
         binding.pickPhoto.setOnClickListener {
-            ImagePicker.with(this)
-                .crop()
-                .compress(2048)
-                .provider(ImageProvider.GALLERY)
-                .galleryMimeTypes(
-                    arrayOf(
-                        "image/png",
-                        "image/jpeg",
-                    )
-                )
-                .createIntent(pickPhotoLauncher::launch)
+            pickMediaLauncher.launch("image/*")
+            type = AttachmentType.IMAGE
+        }
+
+        binding.pickAudio.setOnClickListener {
+            pickMediaLauncher.launch("audio/*")
+            type = AttachmentType.AUDIO
+        }
+
+        binding.pickVideo.setOnClickListener {
+            pickMediaLauncher.launch("video/*")
+            type = AttachmentType.VIDEO
         }
 
 
@@ -115,24 +130,24 @@ class NewPostFragment : Fragment() {
                 .createIntent(pickPhotoLauncher::launch)
         }
 
-//
-//        binding.removePhoto.setOnClickListener {
-//            viewModel.changePhoto(null, null, null)
-//        }
+
+        binding.removePhoto.setOnClickListener {
+            postViewModel.changeMedia(null, null, type)
+        }
 
         postViewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
 
-//        viewModel.photo.observe(viewLifecycleOwner) {
-//            if (it.uri == null) {
-//                binding.photoContainer.visibility = View.GONE
-//                return@observe
-//            }
-//
-//            binding.photoContainer.visibility = View.VISIBLE
-//            binding.photo.setImageURI(it.uri)
-//        }
+        postViewModel.media.observe(viewLifecycleOwner) {
+            if (it.uri == null) {
+                binding.mediaContainer.visibility = View.GONE
+                return@observe
+            }
+            binding.mediaContainer.visibility = View.VISIBLE
+            binding.photo.setImageURI(it.uri)
+            binding.info.text = postViewModel.media.value?.uri?.path
+        }
 
         return binding.root
     }

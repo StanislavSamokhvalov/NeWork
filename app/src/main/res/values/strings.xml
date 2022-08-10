@@ -45,4 +45,8 @@
     <string name="error_play_audio">No application to play audio</string>
     <string name="error_play_video">No application to play video</string>
     <string name="logout_button">Log out</string>
+    <string name="description_pick_audio">Pick audio</string>
+    <string name="description_pick_video">Pick video</string>
+    <string name="menu_hide">Hide</string>
+    <string name="description_post_hide">Hide post</string>
 </resources>

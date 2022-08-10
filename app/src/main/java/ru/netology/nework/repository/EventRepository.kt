@@ -14,5 +14,5 @@ interface EventRepository {
     suspend fun unJoinById(id: Int)
     suspend fun removeById(id: Int)
     suspend fun likeById(id: Int)
-    suspend fun unlikeById(id: Int)
+    suspend fun unLikeById(id: Int)
 }
