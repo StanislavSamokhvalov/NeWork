@@ -42,6 +42,7 @@ class PostsFragment : Fragment() {
                 postViewModel.edit(post)
                 val bundle = Bundle().apply {
                     putString("content", post.content)
+                    putInt("id", post.id)
                 }
                 findNavController().navigate(R.id.newPostFragment, bundle)
             }

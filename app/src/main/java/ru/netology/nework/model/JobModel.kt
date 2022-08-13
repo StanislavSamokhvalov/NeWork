@@ -1,13 +1,14 @@
 package ru.netology.nework.model
 
-import ru.netology.nework.dto.User
+import ru.netology.nework.dto.Job
 
-data class UserModel (
-    val users: List<User> = emptyList(),
+
+data class JobModel (
+    val users: List<Job> = emptyList(),
     val empty: Boolean = false
 )
 
-data class UserModelState(
+data class JobModelState(
     val loading: Boolean = false,
     val error: Boolean = false,
     val refreshing: Boolean = false

@@ -40,11 +40,11 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         })
         binding.list.adapter = adapter
 
-        userViewModel.data.observe(viewLifecycleOwner) { userModel ->
-            adapter.submitList(userModel.users.filter { user ->
+        userViewModel.data.observe(viewLifecycleOwner) { state ->
+            adapter.submitList(state.users.filter { user ->
                 userViewModel.userIds.value!!.contains(user.id)
             })
-        } //TODO("Падаем с ошибкой NPE из onSpeakers и всех производных getuserids")
+        }
 
         return binding.root
     }

@@ -7,13 +7,16 @@ import ru.netology.nework.dao.*
 import ru.netology.nework.entity.*
 
 @Database(
-    entities = [PostEntity::class, PostRemoteKeyEntity::class, UserEntity::class, EventEntity::class, EventRemoteKeyEntity::class], version = 1
+    entities = [PostEntity::class, PostRemoteKeyEntity::class, EventEntity::class,
+        EventRemoteKeyEntity::class, UserEntity::class, JobEntity::class],
+    version = 1
 )
 @TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun postDao(): PostDao
     abstract fun postRemoteKeyDao(): PostRemoteKeyDao
-    abstract fun userDao(): UserDao
     abstract fun eventDao(): EventDao
     abstract fun eventRemoteKeyDao(): EventRemoteKeyDao
+    abstract fun userDao(): UserDao
+    abstract fun jobDao(): JobDao
 }

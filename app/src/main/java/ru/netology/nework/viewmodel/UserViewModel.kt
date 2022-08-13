@@ -47,7 +47,7 @@ class UserViewModel @Inject constructor(
         openUser(profileId)
     }
 
-    fun loadUsers() = viewModelScope.launch {
+    private fun loadUsers() = viewModelScope.launch {
         try {
             _dataState.postValue(UserModelState(loading = true))
             userRepository.getAll()
@@ -67,7 +67,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getUsersIds(set: Set<Int>) = viewModelScope.launch {
+    fun getUsersIds(set: Set<Int>) {
         _usersIds.value = set
     }
 }

@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.card_event.*
+import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentProfileBinding
 import ru.netology.nework.util.AndroidUtils.uploadingAvatar
+import ru.netology.nework.viewmodel.JobViewModel
 import ru.netology.nework.viewmodel.UserViewModel
 import javax.inject.Inject
 
@@ -23,6 +26,7 @@ class ProfileFragment : Fragment() {
     lateinit var appAuth: AppAuth
 
     private val userViewModel: UserViewModel by viewModels()
+    private val jobViewModel: JobViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +51,16 @@ class ProfileFragment : Fragment() {
                 uploadingAvatar(userAvatar, it.avatar)
             }
         }
+
+//        lifecycleScope.launchWhenCreated {
+//            if (id != null) {
+//                jobViewModel.setId(id)
+//                jobViewModel.loadJobs(id)
+//            }
+//            jobViewModel.data.collectLatest {
+//                adapter.submitData(it)
+//            }
+//        }
 
 
         binding.logout.setOnClickListener {

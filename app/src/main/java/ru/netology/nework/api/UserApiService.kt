@@ -8,6 +8,7 @@ import ru.netology.nework.dto.User
 interface UserApiService {
     @GET("users")
     suspend fun getAll(): Response<List<User>>
+
     @GET("users/{id}")
     suspend fun getUserById(@Path("id") id: Int): Response<User>
 }

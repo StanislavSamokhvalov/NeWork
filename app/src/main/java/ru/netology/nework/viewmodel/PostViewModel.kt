@@ -94,6 +94,7 @@ class PostViewModel @Inject constructor(
 
     fun save() {
         edited.value?.let { post ->
+            _postCreated.value = Unit
             viewModelScope.launch {
                 _dataState.postValue(PostModelState(loading = true))
                 try {
@@ -107,10 +108,9 @@ class PostViewModel @Inject constructor(
                             )
                         }
                     }
-                    _dataState.value = PostModelState()
-                    _postCreated.value = Unit
+                    _dataState.postValue(PostModelState())
                 } catch (e: Exception) {
-                    _dataState.value = PostModelState(error = true)
+                    _dataState.postValue(PostModelState(error = true))
                 }
             }
             _edited.value = empty
@@ -133,11 +133,12 @@ class PostViewModel @Inject constructor(
     }
 
     fun changeContent(content: String) {
-        val text = content.trim()
-        if (edited.value?.content == text) {
-            return
+        edited.value?.let {
+            val text = content.trim()
+            if (it.content != text) {
+                _edited.value = it.copy(content = text)
+            }
         }
-        _edited.value = edited.value?.copy(content = text)
     }
 
     fun likeById(id: Int) = viewModelScope.launch {

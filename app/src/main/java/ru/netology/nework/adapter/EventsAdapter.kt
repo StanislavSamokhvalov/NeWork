@@ -55,6 +55,9 @@ class EventViewHolder(
             eventDateEdit.text = event.datetime
             eventFormatEdit.text = event.type.toString()
             like.isChecked = event.likedByMe
+            join.isChecked = event.participatedByMe
+            if (event.participatedByMe) join.setText(R.string.join_button_checked)
+            else join.setText(R.string.join_button_unchecked)
 
             userAvatar.setOnClickListener {
                 eventCallback.onOpenAvatar(event)
@@ -69,7 +72,6 @@ class EventViewHolder(
             }
 
             join.setOnClickListener {
-                if (join.isChecked) join.setText(R.string.join_button_checked) else join.setText(R.string.join_button_unchecked)
                 eventCallback.onJoin(event)
             }
 
