@@ -48,7 +48,8 @@
                     android:id="@+id/removePhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/common_spacing"
                     android:text="@string/menu_remove" />
             </FrameLayout>
         </LinearLayout>

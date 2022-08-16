@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
@@ -28,7 +29,7 @@ class NewPostFragment : Fragment() {
 
     var type: AttachmentType? = null
 
-    private val postViewModel: PostViewModel by viewModels()
+    private val postViewModel: PostViewModel by activityViewModels()
 
     private var fragmentBinding: FragmentNewPostBinding? = null
 

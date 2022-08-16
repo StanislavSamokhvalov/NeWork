@@ -29,7 +29,7 @@ import ru.netology.nework.viewmodel.UserViewModel
 @AndroidEntryPoint
 class EventsFragment : Fragment() {
 
-    private val eventViewModel: EventViewModel by viewModels()
+    private val eventViewModel: EventViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
 
