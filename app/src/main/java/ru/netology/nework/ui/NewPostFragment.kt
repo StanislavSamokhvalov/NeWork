@@ -75,6 +75,7 @@ class NewPostFragment : Fragment() {
         )
         fragmentBinding = binding
 
+
         binding.edit.setText(
             arguments?.getString("content") ?: postViewModel.edited.value?.content
         )

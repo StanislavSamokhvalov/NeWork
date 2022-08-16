@@ -35,7 +35,7 @@ class UsersFragment : Fragment() {
                 bundle.putInt("id", user.id)
                 bundle.putString("url", user.avatar)
                 bundle.putString("name", user.name)
-                findNavController().navigate(R.id.navigation_profile, bundle)
+                findNavController().navigate(R.id.userProfileFragment, bundle)
             }
         })
 

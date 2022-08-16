@@ -10,6 +10,8 @@ import ru.netology.nework.dto.Job
 
 
 interface JobCallback {
+    fun onEdit() {}
+    fun onRemove() {}
 }
 
 class JobsAdapter(

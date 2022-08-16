@@ -90,6 +90,11 @@ class EventsFragment : Fragment() {
 
             override fun onEdit(event: Event) {
                 eventViewModel.edit(event)
+                val bundle = Bundle().apply {
+                    putString("content", event.content)
+                    putString("dateTime", event.datetime)
+                }
+                findNavController().navigate(R.id.fragmentNewEvent, bundle)
             }
 
             override fun onJoin(event: Event) {

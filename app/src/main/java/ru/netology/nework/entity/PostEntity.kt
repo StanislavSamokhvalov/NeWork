@@ -8,12 +8,12 @@ import ru.netology.nework.dto.*
 @Entity
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val authorId: Int = 0,
-    val author: String = "",
-    val authorAvatar: String? = "",
-    val content: String = "",
-    val published: String = "",
+    val id: Int,
+    val authorId: Int,
+    val author: String,
+    val authorAvatar: String?,
+    val content: String,
+    val published: String,
     @Embedded
     val coordinates: CoordinatesEmbeddable? = null,
     val link: String? = "",
@@ -60,7 +60,6 @@ data class PostEntity(
                 dto.ownedByMe,
                 AttachmentEmbeddable.fromDto(dto.attachment)
             )
-
     }
 }
 

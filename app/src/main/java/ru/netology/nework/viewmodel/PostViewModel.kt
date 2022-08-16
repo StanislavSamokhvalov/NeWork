@@ -96,7 +96,7 @@ class PostViewModel @Inject constructor(
         edited.value?.let { post ->
             _postCreated.value = Unit
             viewModelScope.launch {
-                _dataState.postValue(PostModelState(loading = true))
+                _dataState.value = PostModelState(loading = true)
                 try {
                     when (_media.value) {
                         noMedia -> postRepository.save(post)
@@ -108,14 +108,14 @@ class PostViewModel @Inject constructor(
                             )
                         }
                     }
-                    _dataState.postValue(PostModelState())
+                    _dataState.value = PostModelState()
                 } catch (e: Exception) {
-                    _dataState.postValue(PostModelState(error = true))
+                    _dataState.value = PostModelState(error = true)
                 }
             }
-            _edited.value = empty
-            _media.value = noMedia
         }
+        _edited.value = empty
+        _media.value = noMedia
     }
 
     fun refreshPosts() = viewModelScope.launch {
@@ -133,10 +133,10 @@ class PostViewModel @Inject constructor(
     }
 
     fun changeContent(content: String) {
-        edited.value?.let {
+        _edited.value?.let { post ->
             val text = content.trim()
-            if (it.content != text) {
-                _edited.value = it.copy(content = text)
+            if (post.content != text) {
+                _edited.value = post.copy(content = text)
             }
         }
     }

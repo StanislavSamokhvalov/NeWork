@@ -1,5 +1,6 @@
 package ru.netology.nework.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +12,7 @@ import ru.netology.nework.model.UserModel
 import ru.netology.nework.model.UserModelState
 import ru.netology.nework.repository.UserRepository
 import ru.netology.nework.ui.USER_ID
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel

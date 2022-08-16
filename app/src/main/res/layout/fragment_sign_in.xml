@@ -88,23 +88,23 @@
 
             <Button
                 android:id="@+id/signInButton"
-                android:layout_width="140dp"
+                android:layout_width="160dp"
                 android:layout_height="50dp"
                 android:backgroundTint="@color/primaryColor"
                 android:fontFamily="@font/nunito_bold"
                 android:text="@string/button_sign_in"
+                android:layout_marginTop="30dp"
                 android:textColor="@color/primaryTextColor"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/password"
-                app:layout_constraintVertical_bias="0.10" />
+                app:layout_constraintTop_toBottomOf="@+id/password" />
 
             <TextView
                 android:id="@+id/registrationText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/nunito_bold"
                 android:text="@string/registration_text"
@@ -112,11 +112,12 @@
                 app:layout_constraintBottom_toTopOf="@+id/registrationButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signInButton" />
 
             <Button
                 android:id="@+id/registrationButton"
-                android:layout_width="150dp"
+                android:layout_width="160dp"
                 android:layout_height="50dp"
                 android:backgroundTint="@color/primaryColor"
                 android:fontFamily="@font/nunito_bold"

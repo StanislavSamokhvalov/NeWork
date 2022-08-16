@@ -20,7 +20,7 @@ import ru.netology.nework.viewmodel.UserViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ProfileFragment : Fragment() {
+class UserProfileFragment : Fragment() {
     @Inject
     lateinit var appAuth: AppAuth
 
@@ -36,31 +36,21 @@ class ProfileFragment : Fragment() {
     ): View {
         val binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        userViewModel.user.observe(viewLifecycleOwner) { user ->
+        val id = arguments?.getInt("id")
+        val avatar = arguments?.getString("url")
+        val name = arguments?.getString("name")
+
+        userViewModel.user.observe(viewLifecycleOwner) {
             with(binding) {
-                userName.text = user.name
-                uploadingAvatar(userAvatar, user.avatar)
-                uploadingAvatarBackground(background, user.avatar)
+                userName.text = name
+                uploadingAvatar(userAvatar, avatar)
+                uploadingAvatarBackground(background, avatar)
                 userAvatar.setOnClickListener {
                     val bundle = Bundle().apply {
-                        putString("url", user.avatar)
+                        putString("url", avatar)
                     }
                     findNavController().navigate(R.id.singleImageFragment, bundle)
                 }
-            }
-        }
-
-        with(binding) {
-            logout.visibility = View.VISIBLE
-//            editAvatar.visibility = View.VISIBLE
-//
-//            editAvatar.setOnClickListener {
-//
-//            }
-
-            logout.setOnClickListener {
-                appAuth.removeAuth()
-                findNavController().navigate(R.id.action_navigation_profile_to_signInFragment)
             }
         }
 

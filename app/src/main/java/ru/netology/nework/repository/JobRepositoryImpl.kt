@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import ru.netology.nework.api.JobApiService
 import ru.netology.nework.dao.JobDao
+import ru.netology.nework.db.AppDb
 import ru.netology.nework.dto.Job
 import ru.netology.nework.entity.JobEntity
 import ru.netology.nework.entity.toDto
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 class JobRepositoryImpl @Inject constructor(
     private val jobDao: JobDao,
-    private val jobApiService: JobApiService) : JobRepository {
+    private val jobApiService: JobApiService
+) : JobRepository {
 
     override val data = jobDao.getAll()
         .map(List<JobEntity>::toDto)

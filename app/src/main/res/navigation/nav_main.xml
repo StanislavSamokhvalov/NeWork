@@ -122,4 +122,8 @@
         android:id="@+id/fragmentNewEvent"
         android:name="ru.netology.nework.ui.NewEventFragment"
         android:label="FragmentNewEvent" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="ru.netology.nework.ui.UserProfileFragment"
+        android:label="Profile" />
 </navigation>
