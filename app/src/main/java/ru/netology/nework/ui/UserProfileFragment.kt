@@ -6,9 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nework.R
+import ru.netology.nework.adapter.JobCallback
+import ru.netology.nework.adapter.JobsAdapter
+import ru.netology.nework.adapter.PostCallback
+import ru.netology.nework.adapter.PostsAdapter
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentProfileBinding
 import ru.netology.nework.util.AndroidUtils.uploadingAvatar
@@ -51,6 +57,23 @@ class UserProfileFragment : Fragment() {
                     }
                     findNavController().navigate(R.id.singleImageFragment, bundle)
                 }
+            }
+        }
+
+
+        val jobAdapter = JobsAdapter(object : JobCallback {})
+        binding.posts.adapter = jobAdapter
+
+        jobViewModel.data.observe(viewLifecycleOwner) { state ->
+            jobAdapter.submitList(state.job)
+        }
+
+        val postsAdapter = PostsAdapter(object : PostCallback {})
+        binding.posts.adapter = postsAdapter
+
+        lifecycleScope.launchWhenCreated {
+            postViewModel.userWall.collectLatest {
+                postsAdapter.submitData(it)
             }
         }
 

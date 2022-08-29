@@ -49,4 +49,6 @@
     <string name="description_pick_video">Pick video</string>
     <string name="menu_hide">Hide</string>
     <string name="description_post_hide">Hide post</string>
+    <string name="dash">—</string>
+    <string name="avatar_button">Upload avatar</string>
 </resources>

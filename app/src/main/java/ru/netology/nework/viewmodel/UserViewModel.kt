@@ -7,12 +7,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nework.auth.AppAuth
+import ru.netology.nework.dto.PhotoUpload
 import ru.netology.nework.dto.User
+import ru.netology.nework.model.MediaModel
 import ru.netology.nework.model.UserModel
 import ru.netology.nework.model.UserModelState
 import ru.netology.nework.repository.UserRepository
 import ru.netology.nework.ui.USER_ID
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,6 +45,11 @@ class UserViewModel @Inject constructor(
     val userIds: LiveData<Set<Int>>
         get() = _usersIds
 
+    private val noPhoto = MediaModel()
+    private val _photo = MutableLiveData(noPhoto)
+    val photo: LiveData<MediaModel>
+        get() = _photo
+
     init {
         loadUsers()
         openUser(profileId)
@@ -71,5 +77,23 @@ class UserViewModel @Inject constructor(
 
     fun getUsersIds(set: Set<Int>) {
         _usersIds.value = set
+    }
+
+    fun uploadAvatar() = viewModelScope.launch {
+        try {
+            _dataState.postValue(UserModelState(loading = true))
+            _photo.value?.uri?.let {
+                PhotoUpload(it)
+            }.run {
+                this?.let { userRepository.uploadAvatar(it) }
+            }
+            _dataState.postValue(UserModelState())
+        } catch (e: Exception) {
+            _dataState.postValue(UserModelState(error = true))
+        }
+    }
+
+    fun changePhoto(uri: Uri?) {
+        _photo.value = MediaModel(uri)
     }
 }

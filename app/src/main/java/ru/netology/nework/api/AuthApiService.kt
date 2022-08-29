@@ -1,5 +1,7 @@
 package ru.netology.nework.api
 
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.netology.nework.dto.Post
@@ -19,8 +21,17 @@ interface AuthApiService {
     @POST("users/registration")
     suspend fun registerUser(
         @Field("login") login: String?,
-        @Field("password") pass: String?,
+        @Field("password") password: String?,
         @Field("name") name: String?
+    ): Response<Token>
+
+    @Multipart
+    @POST("users/registration")
+    suspend fun registrationUserWithAvatar(
+        @Part("login") login: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part media: MultipartBody.Part
     ): Response<Token>
 
     @POST("users/push-tokens")

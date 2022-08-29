@@ -78,4 +78,8 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideJobApiService(retrofit: Retrofit): JobApiService = retrofit.create()
+
+    @Singleton
+    @Provides
+    fun provideWallApiService(retrofit: Retrofit): WallApiService = retrofit.create()
 }

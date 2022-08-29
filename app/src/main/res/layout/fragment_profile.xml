@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="640dp"
     android:background="#fff">
 
     <ScrollView
@@ -79,16 +78,31 @@
                 android:visibility="gone"
                 app:icon="@drawable/ic_logout_24dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible"/>
 
-            <TextView
-                android:id="@+id/textView2"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editAvatar"
+                style="@style/Widget.AppTheme.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Job"
-                android:textSize="16sp"
+                android:contentDescription="@string/logout_button"
+                android:padding="@dimen/common_spacing"
+                android:visibility="gone"
+                app:icon="@drawable/ic_edit_24dp"
+                app:layout_constraintEnd_toStartOf="@id/logout"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/jobs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/common_spacing"
                 android:layout_marginTop="@dimen/common_spacing"
+                android:fontFamily="@font/nunito_bold"
+                android:text="Job"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageCard" />
 
@@ -97,9 +111,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/jobs"
                 tools:listitem="@layout/card_job" />
+
+            <TextView
+                android:id="@+id/post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_spacing"
+                android:fontFamily="@font/nunito_bold"
+                android:text="Posts"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/job" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/posts"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/post"
+                tools:listitem="@layout/card_post" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

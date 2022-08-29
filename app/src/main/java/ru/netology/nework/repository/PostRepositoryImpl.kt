@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nework.api.PostApiService
+import ru.netology.nework.api.WallApiService
 import ru.netology.nework.dao.PostDao
 import ru.netology.nework.dao.PostRemoteKeyDao
 import ru.netology.nework.db.AppDb
@@ -20,14 +21,16 @@ import ru.netology.nework.error.ApiError
 import ru.netology.nework.error.NetworkError
 import ru.netology.nework.error.UnknownError
 import ru.netology.nework.mediator.PostRemoteMediator
+import ru.netology.nework.mediator.WallRemoteMediator
 import java.io.IOException
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
     private val postDao: PostDao,
     private val postApiService: PostApiService,
-    postRemoteKeyDao: PostRemoteKeyDao,
-    appDb: AppDb
+    private val wallApiService: WallApiService,
+    private val postRemoteKeyDao: PostRemoteKeyDao,
+    private val appDb: AppDb
 ) : PostRepository {
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<Post>> = Pager(
@@ -37,6 +40,16 @@ class PostRepositoryImpl @Inject constructor(
     )
         .flow
         .map { it.map(PostEntity::toDto) }
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getUserWall(id: Int): Flow<PagingData<Post>> = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        remoteMediator = WallRemoteMediator(wallApiService, postDao, postRemoteKeyDao, appDb, id),
+        pagingSourceFactory = { postDao.getPagingSource(id) },
+    )
+        .flow
+        .map { it.map(PostEntity::toDto) }
+
 
     override suspend fun getAll() {
         try {
@@ -73,7 +86,7 @@ class PostRepositoryImpl @Inject constructor(
         try {
             val media = upload(upload)
             val postWithAttachment =
-                post.copy(attachment = Attachment(media.url,  type))
+                post.copy(attachment = Attachment(media.url, type))
             save(postWithAttachment)
         } catch (e: IOException) {
             throw NetworkError

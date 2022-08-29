@@ -4,7 +4,7 @@ import ru.netology.nework.dto.Job
 
 
 data class JobModel (
-    val users: List<Job> = emptyList(),
+    val job: List<Job> = emptyList(),
     val empty: Boolean = false
 )
 

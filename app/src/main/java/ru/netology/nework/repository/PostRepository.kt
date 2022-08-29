@@ -17,4 +17,5 @@ interface PostRepository {
     suspend fun unlikeById(id: Int)
     suspend fun saveWithAttachment(post: Post, upload: MediaUpload, type: AttachmentType)
     suspend fun upload(upload: MediaUpload): Media
+    fun getUserWall(id: Int): Flow<PagingData<Post>>
 }

@@ -32,7 +32,7 @@ class UsersFragment : Fragment() {
         val adapter = UsersAdapter(object : UserCallback {
             override fun onUser(user: User) {
                 userViewModel.openUser(user.id)
-                bundle.putInt("id", user.id)
+                bundle.putInt(USER_ID, user.id)
                 bundle.putString("url", user.avatar)
                 bundle.putString("name", user.name)
                 findNavController().navigate(R.id.userProfileFragment, bundle)

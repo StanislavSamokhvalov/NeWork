@@ -1,10 +1,7 @@
 package ru.netology.nework.viewmodel
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.filter
 import androidx.paging.map
@@ -23,6 +20,7 @@ import ru.netology.nework.enumeration.AttachmentType
 import ru.netology.nework.model.MediaModel
 import ru.netology.nework.model.PostModelState
 import ru.netology.nework.repository.PostRepository
+import ru.netology.nework.ui.USER_ID
 import ru.netology.nework.util.SingleLiveEvent
 import java.io.InputStream
 import javax.inject.Inject
@@ -40,6 +38,7 @@ private val empty = Post(
 @OptIn(ExperimentalCoroutinesApi::class)
 class PostViewModel @Inject constructor(
     private val postRepository: PostRepository,
+    private val stateHandle: SavedStateHandle,
     appAuth: AppAuth
 ) : ViewModel() {
 
@@ -56,6 +55,20 @@ class PostViewModel @Inject constructor(
                     !hidePosts.contains(validPost)
                 }
             }
+        }.flowOn(Dispatchers.Default)
+
+    val userWall: Flow<PagingData<Post>> = appAuth
+        .authStateFlow
+        .flatMapLatest { (myId, _) ->
+            postRepository.getUserWall(stateHandle[USER_ID] ?: myId)
+                .map { pagingData ->
+                    pagingData.map { post ->
+                        post.copy(
+                            ownedByMe = post.authorId == myId,
+                            likedByMe = post.likeOwnerIds.contains(myId)
+                        )
+                    }
+                }
         }.flowOn(Dispatchers.Default)
 
     private val _dataState = MutableLiveData<PostModelState>()

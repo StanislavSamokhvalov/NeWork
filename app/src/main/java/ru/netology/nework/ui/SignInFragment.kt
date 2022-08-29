@@ -31,8 +31,8 @@ class SignInFragment : Fragment() {
             false
         )
 
-        signInViewModel.dataState.observe(viewLifecycleOwner) { state ->
-            if (state.errorLogin) {
+        signInViewModel.authForm.observe(viewLifecycleOwner) { state ->
+            if (state.errorAuth) {
                 binding.password.error = getString(R.string.error_auth)
             }
         }
