@@ -18,6 +18,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nework.R
 import ru.netology.nework.adapter.JobCallback
@@ -69,7 +70,6 @@ class ProfileFragment : Fragment() {
                 }
             }
 
-
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             with(binding) {
                 userName.text = user.name
@@ -85,10 +85,13 @@ class ProfileFragment : Fragment() {
         }
 
         val jobAdapter = JobsAdapter(object : JobCallback{})
-        binding.posts.adapter = jobAdapter
+        binding.job.adapter = jobAdapter
 
-        jobViewModel.data.observe(viewLifecycleOwner) { state ->
-            jobAdapter.submitList(state.job)
+        lifecycleScope.launchWhenCreated {
+            jobViewModel.loadJobs()
+            jobViewModel.data.collectLatest {
+                jobAdapter.submitList(it)
+            }
         }
 
         val postsAdapter = PostsAdapter(object : PostCallback {
@@ -172,10 +175,15 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
         with(binding) {
             logout.visibility = View.VISIBLE
             editAvatar.visibility = View.VISIBLE
+            addJob.visibility = View.VISIBLE
+
+            logout.setOnClickListener {
+                appAuth.removeAuth()
+                findNavController().navigate(R.id.action_navigation_profile_to_signInFragment)
+            }
 
             editAvatar.setOnClickListener {
                 ImagePicker.with(this@ProfileFragment)
@@ -185,9 +193,8 @@ class ProfileFragment : Fragment() {
                     .createIntent(pickPhotoLauncher::launch)
             }
 
-            logout.setOnClickListener {
-                appAuth.removeAuth()
-                findNavController().navigate(R.id.action_navigation_profile_to_signInFragment)
+            addJob.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_profile_to_newJobFragment)
             }
         }
 

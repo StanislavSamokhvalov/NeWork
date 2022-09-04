@@ -64,6 +64,13 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_navigation_profile_to_newJobFragment"
+            app:destination="@id/newJobFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/navigation_events"
@@ -121,9 +128,13 @@
     <fragment
         android:id="@+id/fragmentNewEvent"
         android:name="ru.netology.nework.ui.NewEventFragment"
-        android:label="FragmentNewEvent" />
+        android:label="Create a event" />
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="ru.netology.nework.ui.UserProfileFragment"
         android:label="Profile" />
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="ru.netology.nework.ui.NewJobFragment"
+        android:label="Create a job" />
 </navigation>

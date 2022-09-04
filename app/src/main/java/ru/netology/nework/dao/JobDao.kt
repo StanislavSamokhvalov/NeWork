@@ -12,6 +12,9 @@ interface JobDao {
     @Query("SELECT * FROM JobEntity ORDER BY id DESC")
     fun getAll(): Flow<List<JobEntity>>
 
+    @Query("SELECT * FROM JobEntity WHERE id = :id")
+    fun getById(id: Int): JobEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(job: JobEntity)
 
@@ -20,4 +23,7 @@ interface JobDao {
 
     @Query("DELETE FROM JobEntity WHERE id = :id")
     suspend fun removeById(id: Int)
+
+    @Query("DELETE FROM JobEntity")
+    suspend fun removeAll()
 }

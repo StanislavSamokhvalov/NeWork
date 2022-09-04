@@ -62,10 +62,13 @@ class UserProfileFragment : Fragment() {
 
 
         val jobAdapter = JobsAdapter(object : JobCallback {})
-        binding.posts.adapter = jobAdapter
+        binding.job.adapter = jobAdapter
 
-        jobViewModel.data.observe(viewLifecycleOwner) { state ->
-            jobAdapter.submitList(state.job)
+        lifecycleScope.launchWhenCreated {
+            jobViewModel.loadJobs()
+            jobViewModel.data.collectLatest {
+                jobAdapter.submitList(it)
+            }
         }
 
         val postsAdapter = PostsAdapter(object : PostCallback {})

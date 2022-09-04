@@ -80,8 +80,9 @@
                 app:layout_constraintTop_toBottomOf="@id/name"
                 tools:ignore="SpeakableTextPresentCheck" />
 
+
             <TextView
-                android:id="@+id/textLogin"
+                android:id="@+id/textCompany"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_bold"
@@ -89,9 +90,8 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/login"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.279"
+                app:layout_constraintHorizontal_bias="0.273"
                 app:layout_constraintStart_toStartOf="parent" />
-
 
             <TextView
                 android:id="@+id/textName"
@@ -102,7 +102,7 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/name"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.28"
+                app:layout_constraintHorizontal_bias="0.274"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login"
                 app:layout_constraintVertical_bias="1.0" />
@@ -116,7 +116,7 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintHorizontal_bias="0.298"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -128,7 +128,7 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/repeatPassword"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.348"
+                app:layout_constraintHorizontal_bias="0.359"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText

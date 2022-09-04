@@ -1,17 +1,21 @@
 package ru.netology.nework.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.nework.R
 import ru.netology.nework.databinding.CardJobBinding
 import ru.netology.nework.dto.Job
+import ru.netology.nework.util.AndroidUtils.formatToDate
 
 
 interface JobCallback {
-    fun onEdit() {}
-    fun onRemove() {}
+    fun onEdit(job: Job) {}
+    fun onRemove(job: Job) {}
 }
 
 class JobsAdapter(
@@ -34,7 +38,33 @@ class JobViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(job: Job) {
+        with(binding) {
+            nameCompany.text = job.name
+            vacancy.text = job.position
+            workStart.text = formatToDate(job.start)
+            workFinish.text = formatToDate(job.finish)
 
+            menu.visibility = if (job.ownedByMe) View.VISIBLE else View.INVISIBLE
+            menu.setOnClickListener {
+                PopupMenu(it.context, it).apply {
+                    inflate(R.menu.options_post)
+                    menu.setGroupVisible(R.id.owned, job.ownedByMe)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.remove -> {
+                                jobCallback.onRemove(job)
+                                true
+                            }
+                            R.id.edit -> {
+                                jobCallback.onEdit(job)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                }.show()
+            }
+        }
     }
 }
 

@@ -63,7 +63,7 @@
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
-                android:id="@+id/textLogin"
+                android:id="@+id/textCompany"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_bold"
@@ -71,7 +71,7 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/login"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.279"
+                app:layout_constraintHorizontal_bias="0.276"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -83,7 +83,7 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintHorizontal_bias="0.298"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button

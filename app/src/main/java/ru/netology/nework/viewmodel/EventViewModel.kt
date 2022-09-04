@@ -62,7 +62,7 @@ class EventViewModel @Inject constructor(
         loadEvent()
     }
 
-    fun loadEvent() = viewModelScope.launch {
+    private fun loadEvent() = viewModelScope.launch {
         try {
             _dataState.postValue(EventModelState(loading = true))
             eventRepository.getAll()
