@@ -18,7 +18,6 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.flow.collectLatest
 import ru.netology.nework.R
 import ru.netology.nework.adapter.JobCallback
@@ -27,6 +26,7 @@ import ru.netology.nework.adapter.PostCallback
 import ru.netology.nework.adapter.PostsAdapter
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentProfileBinding
+import ru.netology.nework.dto.Job
 import ru.netology.nework.dto.Post
 import ru.netology.nework.util.AndroidUtils.uploadingAvatar
 import ru.netology.nework.util.AndroidUtils.uploadingAvatarBackground
@@ -42,7 +42,7 @@ class ProfileFragment : Fragment() {
     lateinit var appAuth: AppAuth
 
     private val userViewModel: UserViewModel by viewModels()
-    private val jobViewModel: JobViewModel by viewModels()
+    private val jobViewModel: JobViewModel by activityViewModels()
     private val postViewModel: PostViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by viewModels()
 
@@ -84,7 +84,23 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        val jobAdapter = JobsAdapter(object : JobCallback{})
+        val jobAdapter = JobsAdapter(object : JobCallback {
+            override fun onEdit(job: Job) {
+                jobViewModel.edit(job)
+                val bundle = Bundle().apply {
+                    putString("companyName", job.name)
+                    putString("position", job.position)
+                    putString("start", job.start)
+                    putString("finish", job.finish)
+                }
+                findNavController().navigate(R.id.newJobFragment, bundle)
+            }
+
+            override fun onRemove(job: Job) {
+                jobViewModel.removeJobById(job.id)
+            }
+        })
+
         binding.job.adapter = jobAdapter
 
         lifecycleScope.launchWhenCreated {
@@ -167,6 +183,7 @@ class ProfileFragment : Fragment() {
                 findNavController().navigate(R.id.singleImageFragment, bundle)
             }
         })
+
         binding.posts.adapter = postsAdapter
 
         lifecycleScope.launchWhenCreated {
@@ -179,6 +196,11 @@ class ProfileFragment : Fragment() {
             logout.visibility = View.VISIBLE
             editAvatar.visibility = View.VISIBLE
             addJob.visibility = View.VISIBLE
+
+            swiperefresh.setOnRefreshListener {
+                postViewModel.refreshPosts()
+                jobViewModel.refreshJobs()
+            }
 
             logout.setOnClickListener {
                 appAuth.removeAuth()
@@ -195,6 +217,20 @@ class ProfileFragment : Fragment() {
 
             addJob.setOnClickListener {
                 findNavController().navigate(R.id.action_navigation_profile_to_newJobFragment)
+            }
+        }
+
+        postViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.swiperefresh.isRefreshing = state.refreshing
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG).show()
+            }
+        }
+
+        jobViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.swiperefresh.isRefreshing = state.refreshing
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG).show()
             }
         }
 

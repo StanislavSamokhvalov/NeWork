@@ -65,6 +65,16 @@ class UserViewModel @Inject constructor(
         }
     }
 
+    fun refreshUsers() = viewModelScope.launch {
+        try {
+            _dataState.postValue(UserModelState(refreshing = true))
+            userRepository.getAll()
+            _dataState.postValue(UserModelState())
+        } catch (e: Exception) {
+            _dataState.postValue(UserModelState(error = true))
+        }
+    }
+
     fun openUser(id: Int) = viewModelScope.launch {
         try {
             _dataState.postValue(UserModelState(loading = true))

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.adapter.UserCallback
@@ -40,6 +41,17 @@ class UsersFragment : Fragment() {
         })
 
         binding.list.adapter = adapter
+
+        binding.swiperefresh.setOnRefreshListener {
+            userViewModel.refreshUsers()
+        }
+
+        userViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.swiperefresh.isRefreshing = state.refreshing
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG).show()
+            }
+        }
 
         userViewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.users)

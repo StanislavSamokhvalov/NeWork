@@ -37,10 +37,9 @@ class NewEventFragment : Fragment() {
         fragmentBinding = binding
 
         val dateTime = arguments?.getString("dateTime")?.let { formatToDate(it) }
-            ?: formatToDate("${eventViewModel.edited.value?.datetime}")
 
-        val date = dateTime.substring(0, 10)
-        val time = dateTime.substring(11)
+        val date = dateTime?.substring(0, 10)
+        val time = dateTime?.substring(11)
 
         binding.editText.setText(
             arguments?.getString("content") ?: eventViewModel.edited.value?.content

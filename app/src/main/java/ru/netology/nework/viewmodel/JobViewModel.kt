@@ -11,8 +11,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.dto.Job
+import ru.netology.nework.dto.Post
 import ru.netology.nework.model.JobModel
 import ru.netology.nework.model.JobModelState
+import ru.netology.nework.model.PostModelState
 import ru.netology.nework.repository.JobRepository
 import ru.netology.nework.ui.USER_ID
 import ru.netology.nework.util.SingleLiveEvent
@@ -52,7 +54,9 @@ class JobViewModel @Inject constructor(
     val dataState: LiveData<JobModelState>
         get() = _dataState
 
-    private val edited = MutableLiveData(empty)
+    private val _edited = MutableLiveData(empty)
+    val edited: LiveData<Job>
+        get() = _edited
 
     private val _userId = MutableLiveData<Int>()
     val userId: LiveData<Int>
@@ -72,6 +76,16 @@ class JobViewModel @Inject constructor(
         }
     }
 
+    fun refreshJobs() = viewModelScope.launch {
+        try {
+            _dataState.postValue(JobModelState(refreshing = true))
+            jobRepository.getByUserId(profileId)
+            _dataState.postValue(JobModelState())
+        } catch (e: Exception) {
+            _dataState.postValue(JobModelState(error = true))
+        }
+    }
+
     fun save() = edited.value?.let { job ->
         _jobCreated.value = Unit
         viewModelScope.launch {
@@ -83,7 +97,15 @@ class JobViewModel @Inject constructor(
                 _dataState.postValue(JobModelState(error = true))
             }
         }
-        edited.value = empty
+        _edited.value = empty
+    }
+
+    fun removeJobById(id: Int) = viewModelScope.launch {
+        try {
+            jobRepository.removeById(id)
+        } catch (e: Exception) {
+            _dataState.postValue(JobModelState(error = true))
+        }
     }
 
     fun changeJob(name: String, position: String, start: String, finish: String? ) {
@@ -92,25 +114,21 @@ class JobViewModel @Inject constructor(
             val positionText = position.trim()
 
             if (edited.value?.name != nameText) {
-                edited.value = edited.value?.copy(name = nameText)
+                _edited.value = edited.value?.copy(name = nameText)
             }
             if (edited.value?.position != positionText) {
-                edited.value = edited.value?.copy(position = positionText)
+                _edited.value = edited.value?.copy(position = positionText)
             }
             if (edited.value?.start != start) {
-                edited.value = edited.value?.copy(start = start)
+                _edited.value = edited.value?.copy(start = start)
             }
             if (edited.value?.finish != finish) {
-                edited.value = edited.value?.copy(finish = finish)
+                _edited.value = edited.value?.copy(finish = finish)
             }
         }
     }
 
     fun edit(job: Job) {
-        edited.value = job
-    }
-
-    fun setId(id: Int) {
-        _userId.value = id
+        _edited.value = job
     }
 }

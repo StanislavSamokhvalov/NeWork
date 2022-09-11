@@ -28,9 +28,7 @@ import ru.netology.nework.viewmodel.PostViewModel
 class NewPostFragment : Fragment() {
 
     var type: AttachmentType? = null
-
     private val postViewModel: PostViewModel by activityViewModels()
-
     private var fragmentBinding: FragmentNewPostBinding? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,7 +73,6 @@ class NewPostFragment : Fragment() {
             false
         )
         fragmentBinding = binding
-
 
         binding.edit.setText(
             arguments?.getString("content") ?: postViewModel.edited.value?.content
@@ -123,7 +120,6 @@ class NewPostFragment : Fragment() {
             type = AttachmentType.VIDEO
         }
 
-
         binding.takePhoto.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
@@ -131,7 +127,6 @@ class NewPostFragment : Fragment() {
                 .provider(ImageProvider.CAMERA)
                 .createIntent(pickPhotoLauncher::launch)
         }
-
 
         binding.removePhoto.setOnClickListener {
             postViewModel.changeMedia(null, null, type)
